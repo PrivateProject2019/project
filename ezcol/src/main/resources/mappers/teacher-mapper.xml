@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teacherMapper">
+
+
+
+
+	<select id="login" parameterType="Common" resultType="Teacher">
+
+		select *
+		from teacher
+		where teacherno = #{id} and substr(ssn ,8,7) = #{password}
+
+	</select>
+
+
+	<select id="listCount" resultType="int">
+
+		select count(*) from teacher
+
+	</select>
+
+	<select id="selectAll" parameterType="hashmap"
+		resultType="Teacher">
+
+		select * from (
+		select rownum rnum, teacherno, deptno, deptname, name, status, ssn, email,
+		address, detailaddress,
+		post,phone,emergency,identity from
+		(select teacher.teacherno,
+		teacher.deptno,deptname,name,status,ssn,email,address,detailaddress,post,
+		phone,emergency,identity from teacher join dept on teacher.deptno =
+		dept.deptno order by teacherno asc )
+     		  <![CDATA[ ) where rnum >= #{startRow}  and rnum <= #{endRow}]]>
+
+
+	</select>
+
+
+	<select id="searchListCount" parameterType="string"
+		resultType="int">
+
+		select count(*) from teacher join dept on teacher.deptno = dept.deptno
+		where (name like '%'|| #{keyword} || '%' ) or (deptname like '%' || #{keyword} || '%' )
+
+	</select>
+
+	<select id="searchTeacher" parameterType="hashmap" resultType="Teacher">
+	
+	select * from (
+		select rownum rnum, teacherno, deptno, deptname, name, status, ssn, email,
+		address, detailaddress,
+		post,phone,emergency,identity from
+		(select teacher.teacherno,
+		teacher.deptno,deptname,name,status,ssn,email,address,detailaddress,post,
+		phone,emergency,identity 
+		from teacher join dept on teacher.deptno = dept.deptno
+		where (name like '%' || #{keyword} || '%' ) or (deptname like '%'||  #{keyword} || '%' )
+		 order by teacherno asc )
+	     <![CDATA[ ) where (rnum >= #{startRow}  and rnum <= #{endRow} )  ]]>
+	
+	</select>
+
+
+	<insert id="insertTeacher" parameterType="Teacher">
+	
+	insert into teacher (teacherno, deptno, name, status, ssn, email, address, detailaddress, post, phone, emergency, identity) values
+	('P'||LPAD(TEACHERSEQ.NEXTVAL,4,0), #{deptno}, #{name}, #{status}, #{ssn}, #{email}, #{address}, #{detailaddress}, #{post},
+				#{phone}, #{emergency}, 'P')
+	
+	
+	</insert>
+
+
+	<select id="selectOne" parameterType="String" resultType="Teacher">
+	
+	 select * from teacher where teacherno = #{no}
+	
+	
+	</select>
+	
+	<update id="updateTeacher" parameterType="Teacher">
+	
+	update teacher set 
+	deptno = #{deptno},
+	name = #{name},
+	status = #{status},
+	ssn = #{ssn},
+	email = #{email},
+	address = #{address},
+	detailaddress = #{detailaddress},
+	post = #{post},
+	phone = #{phone},
+	emergency = #{emergency} where teacherno = #{teacherno}	
+	
+	</update>
+
+
+	<delete id="deleteTeacher" parameterType="string">
+	
+	delete teacher where teacherno = #{no}
+	
+	</delete>
+	
+	<select id="getTeacherName" parameterType="string" resultType="string">
+	
+	select name from teacher where teacherno = #{no}
+	
+	</select>
+
+
+</mapper>

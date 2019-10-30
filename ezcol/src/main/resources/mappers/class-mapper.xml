@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="classMapper">
+
+
+	<select id="listCount" resultType="int">
+
+		select count(*) from class
+
+	</select>
+
+	<select id="selectAll" parameterType="hashmap" resultType="ClassInfo">
+	
+	select * from (
+				select rownum rnum, classno, deptno, teacherno, classname, classtype, classday, classstart,classend,
+              admission, score, place, curriculum 
+              from 
+              (select * from class order by classno desc)
+     		  <![CDATA[ ) where rnum >= #{startRow}  and rnum <= #{endRow} ]]>
+	
+	</select>
+	
+	<select id="searchListCount" parameterType="string" resultType="int">
+	
+	select count(*) from class where  (classname like '%' || #{keyword} || '%') or (classno like '%' || #{keyword} || '%')
+	
+	</select>
+	
+	
+	<select id="searchClass" parameterType="hashmap" resultType="ClassInfo">
+	
+	select * from (
+				select rownum rnum, classno, deptno, teacherno, classname, classtype, classday, classstart,classend,
+              admission, score, place, curriculum 
+              from 
+              (select * from class where (classname like '%' || #{keyword} || '%') or (classno like '%' || #{keyword} || '%')
+               order by classno desc)
+     		   <![CDATA[ ) where (rnum >= #{startRow}  and rnum <= #{endRow} )  ]]>
+	
+	</select>
+	
+	<insert id="insertClass" parameterType="ClassInfo">
+	
+	insert into class (classno, deptno, teacherno,classname, classtype, classday, classstart, classend, admission, score, place, curriculum,
+	ofilename, rfilename, semester) values (
+	
+	'C'||TO_CHAR(SYSDATE,'YYYY')||CLASSSEQ.NEXTVAL,
+	#{deptno},
+	#{teacherno},
+	#{classname},
+	#{classtype},
+	#{classday},
+	#{classstart},
+	#{classend},
+	#{admission},
+	#{score},
+	#{place},
+	#{curriculum},
+	#{ofilename},
+	#{rfilename},
+	#{semester}
+	
+	)
+	
+	</insert>
+	
+	
+	<select id="selectOne" parameterType="string" resultType="ClassInfo">
+	
+	select * from class where classno = #{no}
+	
+	</select>
+	
+	
+	<update id="deleteFile" parameterType="ClassInfo">
+	
+	update class set 
+	
+	ofilename = #{ofilename},
+	rfilename = #{rfilename} where classno = #{classno}
+	
+	</update>
+	
+	<update id="updateClass" parameterType="ClassInfo">
+	
+	update class set 
+	
+	deptno = #{deptno},
+	teacherno = #{teacherno},
+	classname = #{classname},
+	classtype = #{classtype},
+	classday = #{classday},
+	classstart = #{classstart},
+	classend = #{classend},
+	admission = #{admission},
+	score = #{score},
+	place = #{place},
+	semester = #{semester},
+	
+	<if test="ofilename != null">
+	ofilename =  (select ofilename from class where classno = #{classno}) || #{ofilename},
+	</if>
+	<if test="rfilename != null">
+	rfilename =  (select rfilename from class where classno = #{classno}) || #{rfilename},
+	</if>
+	
+	curriculum = #{curriculum}
+	
+	where classno = #{classno}
+	
+	</update>
+	
+	
+	<delete id="deleteClass" parameterType="string">
+	
+	delete class where classno = #{classno}
+	
+	</delete>
+	
+	
+	
+	
+	<select id=" classApplyList" parameterType="hashmap" resultType="ClassInfo">
+	
+	select * from class 
+	
+	where deptno = #{deptno} and substr(classno,2,4) = to_char(sysdate, 'YYYY') and 
+	
+	<if test="semester == 1">
+
+	semester = '1'
+	
+	</if>
+	
+	<if test="semester == 2 ">
+	
+	semester = '2'
+	
+	</if>
+	
+	
+	
+	
+	</select> 
+	
+	
+	
+	
+	
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="deptMapper">
+
+
+	<select id="listCount" resultType="int">
+
+		select count(*) from dept
+
+	</select>
+
+	<select id="selectAll" parameterType="hashmap" resultType="Dept">
+	
+	
+	select * from (
+	
+	select rownum rnum, deptno, teacherno, deptname, admission from (
+	
+	select * from dept order by deptno desc
+	)
+	
+	<![CDATA[ ) where rnum >= #{startRow} and rnum <= #{endRow} ]]>
+	
+	
+	</select>
+	
+	
+	<select id="searchListCount" parameterType="string" resultType="int">
+	
+	select count(*) from dept where deptname like '%' || #{keyword} || '%'
+	
+	</select>
+	
+	<select id="searchDept" parameterType="hashmap" resultType="Dept">
+	
+	select * from (
+	
+	select rownum rnum, deptno, teacherno, deptname, admission from (
+	
+	select * from dept where deptname like '%' || #{keyword} || '%'  order by deptno desc
+	)
+	
+	<![CDATA[ ) where rnum >= #{startRow} and rnum <= #{endRow} ]]>
+	
+	
+	</select>
+	
+	
+	<select id="selectOne" parameterType="String" resultType="Dept">
+	
+	select * from dept where deptno = #{no}
+	
+	</select>
+	
+	<insert id="insertDept" parameterType="Dept">
+	
+	insert into dept (deptno, teacherno, deptname, admission) values ( 'D'||LPAD(DEPTSEQ.NEXTVAL,4,0) , #{teacherno}, #{deptname}, #{admission})
+	
+	</insert>
+	
+	<update id="updateDept" parameterType="Dept">
+	
+	update dept set 
+	
+	teacherno = #{teacherno},
+	deptname = #{deptname},
+	admission = #{admission}
+	
+	where deptno = #{deptno}
+	
+	</update>
+	
+	
+	<delete id="deleteDept" parameterType="string">
+	
+	delete dept where deptno = #{no}
+	
+	</delete>
+	
+	<select id="getDeptName" parameterType="string" resultType="string">
+	
+	select deptname from dept where deptno = #{no}
+	
+	</select>
+
+</mapper>

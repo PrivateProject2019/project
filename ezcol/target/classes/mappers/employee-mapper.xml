@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="employeeMapper">
+
+
+
+	<select id="login" parameterType="Common" resultType="Employee">
+
+		select *
+		from emp
+		where empno = #{id} and substr(ssn ,8,7) = #{password}
+
+	</select>
+
+
+	<select id="listCount" resultType="int">
+	
+	select count(*) from emp
+	
+	</select>
+
+	<select id="selectAll" parameterType="hashmap" resultType="Employee">
+	
+	select * from (
+				select rownum rnum, empno, name, job, belong, ssn, email, address, detailaddress,
+              post,phone,emergency,identity from 
+              (select * from emp order by name asc)
+     		   <![CDATA[ ) where rnum >= #{startRow}  and rnum <= #{endRow} ]]>
+	
+	
+	</select>
+	
+	<select id="searchEmp" parameterType="hashmap" resultType="Employee">
+	
+	
+	select * from (
+				select rownum rnum, empno, name, job, belong, ssn, email, address, detailaddress,
+              post,phone,emergency,identity from 
+              (select * from emp where (name like '%' || #{keyword} || '%') or (belong like '%' || #{keyword} || '%')
+               order by name asc)
+     		   <![CDATA[ ) where (rnum >= #{startRow}  and rnum <= #{endRow} )  ]]>
+			 
+	</select>
+	
+	<select id="searchListCount" parameterType="string" resultType="int">
+	select count(*) from emp where  (name like '%' || #{keyword} || '%') or (belong like '%' || #{keyword} || '%')
+
+	</select>
+	
+	<select id="insertEmp" parameterType="Employee">
+	
+	insert into emp (empno, name, job, belong, ssn, email, address, detailaddress, post, phone, emergency, identity) values 
+			   ('E'||LPAD(EMPSEQ.NEXTVAL,4,0), #{name}, #{job}, #{belong}, #{ssn}, #{email}, #{address}, #{detailaddress}, #{post},
+			   #{phone}, #{emergency}, 'E')
+	
+	</select>
+	
+	<select id="selectOne" parameterType="string" resultType="Employee">
+	
+	select * from emp where empno = #{empno}
+	
+	</select>
+	
+	<update id="updateEmp" parameterType="Employee">
+	
+	update emp set name = #{name}, job=#{job}, belong=#{belong}, ssn=#{ssn}, email=#{email}, address=#{address}, detailaddress=#{detailaddress},
+						post=#{post}, phone=#{phone}, emergency=#{emergency}
+						
+						where empno = #{empno}
+	
+	
+	</update>
+	
+	
+	<delete id="deleteEmp" parameterType="String">
+	
+	delete from emp where empno = #{num}
+	
+	</delete>
+	
+	
+
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE configuration PUBLIC
+"-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+	<typeAliases>
+
+		<typeAlias type="com.kh.ezcol.student.model.vo.Student" alias="Student" />
+		<typeAlias type="com.kh.ezcol.common.model.vo.Common" alias="Common" />
+		<typeAlias type="com.kh.ezcol.employee.model.vo.Employee" alias="Employee" />
+		<typeAlias type="com.kh.ezcol.teacher.model.vo.Teacher" alias="Teacher" />
+		<typeAlias type="com.kh.ezcol.dept.model.vo.Dept" alias="Dept"/>
+		<typeAlias type="com.kh.ezcol.notice.model.vo.Notice" alias="Notice"/>
+		<typeAlias type="com.kh.ezcol.classInfo.model.vo.ClassInfo" alias="ClassInfo"/>
+		<typeAlias type="com.kh.ezcol.breakDown.model.vo.BreakDown" alias="BreakDown"/>
+		
+	</typeAliases>
+
+
+
+
+	<mappers>
+
+		<mapper resource="mappers/student-mapper.xml" />
+		<mapper resource="mappers/employee-mapper.xml" />
+		<mapper resource="mappers/teacher-mapper.xml" />
+		<mapper resource="mappers/dept-mapper.xml" />
+		<mapper resource="mappers/notice-mapper.xml" />
+		<mapper resource="mappers/class-mapper.xml" />
+		<mapper resource="mappers/breakDown-mapper.xml" />
+
+	</mappers>
+
+</configuration>

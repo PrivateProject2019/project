@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="studentMapper">
+
+
+	<resultMap id="resultStudent" type="Student">
+		<result property="studentno" column="STUDENTNO" />
+		<result property="teacherno" column="TEACHERNO" />
+		<result property="deptno" column="DEPTNO" />
+		<result property="name" column="NAME" />
+		<result property="status" column="STATUS" />
+		<result property="ssn" column="SSN" />
+		<result property="email" column="EMAIL" />
+		<result property="address" column="ADDRESS" />
+		<result property="detailaddress" column="DETAILADDRESS" />
+		<result property="post" column="POST" />
+		<result property="phone" column="PHONE" />
+		<result property="emergency" column="EMERGECNY" />
+		<result property="grade" column="GRADE" />
+
+	</resultMap>
+
+	<select id="login" parameterType="Common" resultType="Student">
+
+		select *
+		from student
+		where studentno = #{id} and substr(ssn ,8,7) = #{password}
+
+	</select>
+
+	<select id="listCount" resultType="int">
+
+		select count(*) from student
+
+	</select>
+
+	<select id="selectAll" parameterType="hashmap" resultType="Student">
+
+		select * from (
+		select rownum rnum, studentno, teacherno, deptno, name,status, ssn,
+		email,address,
+		detailaddress, post,phone, emergency, grade, identity from (
+		select * from student order by studentno desc
+		)
+
+		<![CDATA[) where rnum >= #{startRow} and rnum <=#{endRow} ]]>
+
+
+	</select>
+
+	<select id="getDeptName" parameterType="string" resultType="string">
+	
+	select deptname from dept where deptno = #{no}
+	
+	</select>
+
+	<select id="getTeacherName" parameterType="string" resultType="string">
+	
+	select name from teacher where teacherno = #{no}
+	</select>
+	
+	<select id="searchListCount" parameterType="string" resultType="int">
+	
+	select count(*) from student 
+	where name like '%'|| #{keyword} || '%' 
+	
+	</select>
+	
+	<select id="searchStudent" parameterType="hashmap" resultType="Student">
+	
+	select * from (
+	
+	select rownum rnum, studentno, teacherno, deptno, name, status, ssn, email, address, detailaddress,post,phone,emergency, grade
+	from (
+	select  studentno, student.teacherno, student.deptno, name, status, ssn, email, address, detailaddress,post,phone,emergency, grade from student join dept on student.deptno = dept.deptno
+ 	 where (name like '%' || #{keyword} || '%') or (deptname like '%' || #{keyword} || '%') order by studentno desc
+	)
+	<![CDATA[) where rnum >= #{startRow} and rnum <=#{endRow} ]]>
+
+	
+	
+	</select>
+	
+	<insert id="insertStudent" parameterType="Student">
+	
+	insert into student (studentno, teacherno, deptno, name, status, ssn, email, address, detailaddress, post, phone, emergency, grade, identity)
+	values (#{studentno}, #{teacherno}, #{deptno}, #{name}, #{status}, #{ssn}, #{email}, #{address}, #{detailaddress}, #{post}, #{phone},
+	#{emergency}, #{grade}, 'S')
+	
+	</insert>
+	
+	<select id="selectOne" parameterType="string" resultType="Student">
+	
+	select * from student where studentno = #{no}
+	
+	</select>
+
+
+	<update id="updateStudent" parameterType="Student">
+	
+	update student set 
+	
+	studentno = #{studentno},
+	teacherno = #{teacherno},
+	deptno = #{deptno},
+	name = #{name},
+	status = #{status},
+	email = #{email},
+	address= #{address},
+	detailaddress= #{detailaddress},
+	post = #{post},
+	emergency = #{emergency},
+	grade = #{grade}
+	
+	where studentno = #{studentno}
+	
+	
+	</update>
+
+
+
+</mapper>

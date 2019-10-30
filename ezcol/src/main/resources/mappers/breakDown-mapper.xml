@@ -5,8 +5,27 @@
 <mapper namespace="breakDownMapper">
 
 
-	
-	
-	
-	
+	<select id="selectAll" parameterType="hashmap"
+		resultType="BreakDown">
+
+		select  breakdown.classno, breakdown.score, breakdown.studentno from breakdown
+		join class on breakdown.classno = class.classno
+		where substr(class.classno,2,4) = to_char(sysdate, 'YYYY') and studentno = #{studentno} and deptno = #{deptno}
+		
+		
+		<if test="semester == 1">
+		and semester = '1'
+		</if>
+		
+		<if test="semester == 2">
+		and semester = '2'
+		</if>
+
+
+	</select>
+
+
+
+
+
 </mapper>

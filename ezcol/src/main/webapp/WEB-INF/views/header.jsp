@@ -31,7 +31,7 @@
             <li><a href="#">수강관리</a>
             <ul>
             	<li><a href="classApplyGuide.do">수강신청안내</a></li>
-            	<li><a href="classApplyList.do?deptno=${ loginMember.deptno }">수강신청</a>
+            	<li><a href="classApplyList.do?deptno=${ loginMember.deptno }&studentno=${ loginMember.studentno }">수강신청</a>
             </ul>
             </li>
             <li><a href="pages/full-width.html">학점조회</a></li>

@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.ezcol.breakDown.model.service.BreakDownService;
+import com.kh.ezcol.breakDown.model.vo.BreakDown;
 import com.kh.ezcol.classInfo.model.service.ClassInfoService;
 import com.kh.ezcol.classInfo.model.vo.ClassInfo;
 import com.kh.ezcol.common.model.vo.FileName;
@@ -45,6 +47,9 @@ public class ClassInfoController {
 	@Autowired
 	private Paging paging;
 
+	@Autowired
+	private BreakDownService breakDownService;
+
 	@RequestMapping("insertClassForm.do")
 	public String insertClassForm() {
 
@@ -53,31 +58,52 @@ public class ClassInfoController {
 
 	// 수강신청 목록 출력
 	@RequestMapping("classApplyList.do")
-	public ModelAndView classApplyList(String deptno, ModelAndView mv) {
-
-	
+	public ModelAndView classApplyList(String studentno, String deptno, ModelAndView mv) {
 
 		String now = new SimpleDateFormat("yyyyMM").format(new java.util.Date());
-		
+
 		String value = now.substring(4);
-		
+
 		String semester = "";
-		
-		if(value.equals("01")|| value.equals("02")|| value.equals("03")||value.equals("04")||value.equals("05")||value.equals("06")) {
+
+		if (value.equals("01") || value.equals("02") || value.equals("03") || value.equals("04") || value.equals("05")
+				|| value.equals("06")) {
 			semester = "1";
-		}else {
+		} else {
 			semester = "2";
 		}
-		
 
-		HashMap<String, Object> map = new HashMap<String, Object>();
+		// 명세서 총합
 
-		map.put("semester", semester);
-		map.put("deptno", deptno);
+		HashMap<String, String> map1 = new HashMap<String, String>();
+
+		map1.put("studentno", studentno);
+		map1.put("semester", semester);
+		map1.put("deptno", deptno);
+
+		// 로그인한 학생의 이번학기 이번년도 신청한 수업 명세서 리스트 가져옴
+		List<BreakDown> list2 = breakDownService.selectAll(map1);
+		logger.info("list Size : " + list2.size());
+
+		// 명세서의 학점 총합
+
+		int addAll = 0;
+
+		for (BreakDown breakDown : list2) {
+			ClassInfo classInfo2 = classInfoService.selectOne(breakDown.getClassno());
+			addAll += classInfo2.getScore();
+		}
+
+		logger.info("명세서 학점의 총합 : " + addAll);
+
+		HashMap<String, Object> map2 = new HashMap<String, Object>();
+
+		map2.put("semester", semester);
+		map2.put("deptno", deptno);
 
 		logger.info(semester);
 
-		List<ClassInfo> list = classInfoService.classApplyList(map);
+		List<ClassInfo> list = classInfoService.classApplyList(map2);
 
 		for (ClassInfo classInfo : list) {
 
@@ -90,7 +116,7 @@ public class ClassInfoController {
 
 		mv.setViewName("class/classApply");
 		mv.addObject("list", list);
-		
+		mv.addObject("addAll",addAll);
 
 		return mv;
 

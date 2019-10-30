@@ -192,7 +192,7 @@ table {
 					style="float: left; padding-right: 10px;">
 				<h1 style="font-size: 19pt; float: left;">수강신청 내역</h1>
 				<p>학점</p>
-				<p id="hakjum">2</p>
+				<p id="hakjum"> ${addAll} </p>
 				<p>신청학점 :</p>
 				<div class="scrollable">
 					<table id="resultClass">
@@ -289,9 +289,10 @@ table {
             url: "breakDownValidate.do",
             data:{
                 classno:classno,
-                studentno:'${loginMember.studentno}'  
+                studentno:'${loginMember.studentno}',
+                deptno : '${loginMember.deptno}'
             },success: function(message){
-                
+                alert(message);
                 
             }
             

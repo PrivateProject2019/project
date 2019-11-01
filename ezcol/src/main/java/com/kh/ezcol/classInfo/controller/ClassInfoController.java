@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +59,7 @@ public class ClassInfoController {
 
 	// 수강신청 목록 출력
 	@RequestMapping("classApplyList.do")
-	public ModelAndView classApplyList(String studentno, String deptno, ModelAndView mv) {
+	public ModelAndView classApplyList(String studentno, String deptno,@RequestParam(value="keyword", required=false) String keyword ,ModelAndView mv) {
 
 		String now = new SimpleDateFormat("yyyyMM").format(new java.util.Date());
 
@@ -73,25 +74,43 @@ public class ClassInfoController {
 			semester = "2";
 		}
 
-		// 명세서 총합
 
 		HashMap<String, String> map1 = new HashMap<String, String>();
 
 		map1.put("studentno", studentno);
 		map1.put("semester", semester);
 		map1.put("deptno", deptno);
+		
+		
+		
 
 		// 로그인한 학생의 이번학기 이번년도 신청한 수업 명세서 리스트 가져옴
-		List<BreakDown> list2 = breakDownService.selectAll(map1);
-		logger.info("list Size : " + list2.size());
+		List<BreakDown> breakDownList = breakDownService.selectAll(map1);
+		logger.info("list Size : " + breakDownList.size());
 
 		// 명세서의 학점 총합
-
 		int addAll = 0;
 
-		for (BreakDown breakDown : list2) {
+		for (BreakDown breakDown : breakDownList) {
 			ClassInfo classInfo2 = classInfoService.selectOne(breakDown.getClassno());
 			addAll += classInfo2.getScore();
+		}
+
+		// 화면하단에 출력될 로그인한 학생이 수강신청한 수업 정보 리스트
+		List<ClassInfo> list2 = new ArrayList<ClassInfo>();
+		
+		
+		for (BreakDown breakDown : breakDownList) {
+			ClassInfo classInfo = classInfoService.selectOne(breakDown.getClassno());
+
+			String deptName = studentService.getDeptName(classInfo.getDeptno());
+			String teacherName = studentService.getTeacherName(classInfo.getTeacherno());
+
+			classInfo.setDeptname(deptName);
+			classInfo.setTeachername(teacherName);
+
+			list2.add(classInfo);
+
 		}
 
 		logger.info("명세서 학점의 총합 : " + addAll);
@@ -101,10 +120,29 @@ public class ClassInfoController {
 		map2.put("semester", semester);
 		map2.put("deptno", deptno);
 
+		if(keyword != null) {
+			logger.info("수강종류  : " + keyword);
+			map2.put("keyword", keyword);
+		}
+		
 		logger.info(semester);
 
+		
+		
+		
+		// 화면 상단에 출력할 리스트
 		List<ClassInfo> list = classInfoService.classApplyList(map2);
 
+	    
+
+		//이미 신청한 수업 제외하기 (질문) concurrentmodificationexception 
+		 
+		
+		
+		
+		
+		
+		
 		for (ClassInfo classInfo : list) {
 
 			String deptName = studentService.getDeptName(classInfo.getDeptno());
@@ -113,10 +151,15 @@ public class ClassInfoController {
 			classInfo.setDeptname(deptName);
 			classInfo.setTeachername(teacherName);
 		}
+		
+		
+		
+		
 
 		mv.setViewName("class/classApply");
 		mv.addObject("list", list);
-		mv.addObject("addAll",addAll);
+		mv.addObject("addAll", addAll);
+		mv.addObject("list2", list2);
 
 		return mv;
 

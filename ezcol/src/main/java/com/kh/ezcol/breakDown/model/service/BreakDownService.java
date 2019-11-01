@@ -9,4 +9,10 @@ public interface BreakDownService {
 
 	List<BreakDown> selectAll(HashMap<String, String> map);
 
+	int cancelClass(HashMap<String, String> map);
+
+	int countAll(String classno);
+
+	int classApply(HashMap<String, String> map);
+
 }

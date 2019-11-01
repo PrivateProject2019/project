@@ -19,5 +19,17 @@ public class BreakDownDao {
 		return sqlSession.selectList("breakDownMapper.selectAll",map);
 	}
 
+	public int cancelClass(HashMap<String, String> map) {
+		return sqlSession.delete("breakDownMapper.classCancel",map);
+	}
+
+	public int countAll(String classno) {
+		return sqlSession.selectOne("breakDownMapper.countAll",classno);
+	}
+
+	public int classApply(HashMap<String, String> map) {
+		return sqlSession.insert("breakDownMapper.classApply",map);
+	}
+
 	
 }

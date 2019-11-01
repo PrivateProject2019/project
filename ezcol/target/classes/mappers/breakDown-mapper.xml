@@ -14,18 +14,35 @@
 		
 		
 		<if test="semester == 1">
-		and semester = '1'
+		and semester = '1' order by class.classno asc 
 		</if>
 		
 		<if test="semester == 2">
-		and semester = '2'
+		and semester = '2' order by class.classno asc
 		</if>
 
 
 	</select>
 
 
+	<delete id="classCancel" parameterType="hashmap">
+	
+	delete breakdown where classno = #{classno} and studentno = #{studentno}
 
+	
+	</delete>
+
+	<select id="countAll" parameterType="string" resultType="int">
+	
+	select count(*) from breakdown where classno = #{no}
+	
+	</select>
+
+	<insert id="classApply" parameterType="hashmap">
+	
+	insert into breakdown (classno, studentno, score) values  (#{classno}, #{studentno}, 0)
+	
+	</insert>
 
 
 </mapper>

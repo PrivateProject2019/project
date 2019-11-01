@@ -95,8 +95,14 @@ button {
 		<div class="content three_quarter first" id="content">
 			<!-- ################################################################################################ -->
 
-			<h1 class="htitle">공지사항관리</h1>
-
+			<c:if test="${ loginMember.identity eq 'E' }">
+				<h1 class="htitle">공지사항관리</h1>
+			</c:if>
+			
+			<c:if test="${ loginMember.identity eq 'S' }">
+				<h1 class="htitle">공지사항</h1>
+			</c:if>
+			
 			<h1>공지사항 조회</h1>
 
 
@@ -155,7 +161,8 @@ button {
 				<div style="text-align: center; margin-top: 50px;">
 
 
-					<button type="button" id="delete" onclick="return confirmFunction()">삭제</button>
+					<button type="button" id="delete"
+						onclick="return confirmFunction()">삭제</button>
 					<button type="button" id="update"
 						onclick="location.href='updateNoticeForm.do?noticeno=${notice.noticeno}'">수정</button>
 
@@ -186,20 +193,15 @@ button {
 			src="resources/js/jquery.mobilemenu.js"></script> <script
 			type="text/javascript">
 				
-			</script> 
-			
-			
-			<script type="text/javascript">
-			
-				function confirmFunction(){
-					
-					if(confirm("정말 삭제하시겠습니까?")){
-						location.href='deleteNotice.do?noticeno=${notice.noticeno}';
+			</script> <script type="text/javascript">
+				function confirmFunction() {
+
+					if (confirm("정말 삭제하시겠습니까?")) {
+						location.href = 'deleteNotice.do?noticeno=${notice.noticeno}';
 					}
-					
-					
+
 				}
-				
+
 				//현재 메뉴 굵게 처리  
 				$("#sideList li a").each(function() {
 

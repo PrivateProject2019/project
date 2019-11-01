@@ -21,5 +21,20 @@ public class BreakDownServiceImpl implements BreakDownService {
 		return breakdownDao.selectAll(map);
 	}
 
+	@Override
+	public int cancelClass(HashMap<String, String> map) {
+		return breakdownDao.cancelClass(map);
+	}
+
+	@Override
+	public int countAll(String classno) {
+		return breakdownDao.countAll(classno);
+	}
+
+	@Override
+	public int classApply(HashMap<String, String> map) {
+		return breakdownDao.classApply(map);
+	}
+
 	
 }

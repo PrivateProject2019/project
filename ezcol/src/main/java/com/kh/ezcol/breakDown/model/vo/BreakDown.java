@@ -12,7 +12,7 @@ public class BreakDown implements Serializable{
 
 	private String classno;
 	private String studentno;
-	private int score;
+	private double score;
 	
 	
 	public BreakDown() {
@@ -26,7 +26,7 @@ public class BreakDown implements Serializable{
 	}
 
 
-	public BreakDown(String classno, String studentno, int score) {
+	public BreakDown(String classno, String studentno, double score) {
 		super();
 		this.classno = classno;
 		this.studentno = studentno;
@@ -54,12 +54,12 @@ public class BreakDown implements Serializable{
 	}
 
 
-	public int getScore() {
+	public double getScore() {
 		return score;
 	}
 
 
-	public void setScore(int score) {
+	public void setScore(double score) {
 		this.score = score;
 	}
 

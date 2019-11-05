@@ -97,6 +97,19 @@ td:nth-child(9n) {
 	background: #ececec;
 	font-weight: bold;
 }
+
+#sort a{
+ color:  #639fff;
+ font-weight: bold;
+}
+
+#scroll {
+ -ms-overflow-style: none; 
+}
+
+::-webkit-scrollbar {
+display:none;
+} 
 </style>
 
 </head>
@@ -108,7 +121,7 @@ td:nth-child(9n) {
 	<!-- ################################################################################################ -->
 	<!-- ################################################################################################ -->
 	<!-- ################################################################################################ -->
-	<div class="wrapper row3">
+	<div class="wrapper row3" style="margin-left: 50px;">
 		<main class="container-fluid clear"> <!-- main body --> <!-- ################################################################################################ -->
 		<div class="content " id="content">
 			<!-- ################################################################################################ -->
@@ -122,15 +135,15 @@ td:nth-child(9n) {
 				
 				<div style="float: left; margin-top: 20px;" id="sort">
 					<a href="classApplyList.do?deptno=${ loginMember.deptno }&studentno=${ loginMember.studentno }&keyword='전공필수'">전공필수</a>
-					<a>전공선택</a>
-					<a>교양필수</a>
-					<a>교양선택</a>
+					<a href="classApplyList.do?deptno=${ loginMember.deptno }&studentno=${ loginMember.studentno }&keyword='전공선택'">전공선택</a>
+					<a href="classApplyList.do?deptno=${ loginMember.deptno }&studentno=${ loginMember.studentno }&keyword='교양필수'">교양필수</a>
+					<a href="classApplyList.do?deptno=${ loginMember.deptno }&studentno=${ loginMember.studentno }&keyword='교양선택'">교양선택</a>
 				</div>
 				
 					<div style="clear: both;"></div>
 				
 				<br>
-				<div style="overflow: scroll; height: 300px;">
+				<div style="overflow: scroll; height: 300px;" id="scroll">
 					<table>
 						<thead>
 							<tr>
@@ -316,6 +329,8 @@ td:nth-child(9n) {
 	<!-- ################################################################################################ -->
 	<!-- ################################################################################################ -->
 	<!-- ################################################################################################ -->
+	
+	<br><br>
 	<c:import url="../footer.jsp"></c:import>
 	<!-- ################################################################################################ -->
 	<!-- ################################################################################################ -->

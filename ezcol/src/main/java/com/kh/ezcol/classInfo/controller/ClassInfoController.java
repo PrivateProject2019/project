@@ -125,14 +125,15 @@ public class ClassInfoController {
 			map2.put("keyword", keyword);
 		}
 		
-		logger.info(semester);
+		logger.info("현재학기 : " + semester +"학기");
 
 		
 		
 		
 		// 화면 상단에 출력할 리스트
 		List<ClassInfo> list = classInfoService.classApplyList(map2);
-
+		logger.info("deptno : " + deptno);
+		logger.info("상단 리스트 사이즈 : " + list.size());
 	    
 
 		//이미 신청한 수업 제외하기 (질문) concurrentmodificationexception 

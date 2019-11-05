@@ -15,7 +15,8 @@
 		<typeAlias type="com.kh.ezcol.notice.model.vo.Notice" alias="Notice"/>
 		<typeAlias type="com.kh.ezcol.classInfo.model.vo.ClassInfo" alias="ClassInfo"/>
 		<typeAlias type="com.kh.ezcol.breakDown.model.vo.BreakDown" alias="BreakDown"/>
-		
+		<typeAlias type="com.kh.ezcol.attendance.model.vo.Attendance" alias="Attendance"/>
+		<typeAlias type="com.kh.ezcol.absence.model.vo.Absence" alias="Absence"/>
 	</typeAliases>
 
 
@@ -30,7 +31,8 @@
 		<mapper resource="mappers/notice-mapper.xml" />
 		<mapper resource="mappers/class-mapper.xml" />
 		<mapper resource="mappers/breakDown-mapper.xml" />
-
+		<mapper resource="mappers/attendance-mapper.xml" />
+		<mapper resource="mappers/absence-mapper.xml" />	
 	</mappers>
 
 </configuration>

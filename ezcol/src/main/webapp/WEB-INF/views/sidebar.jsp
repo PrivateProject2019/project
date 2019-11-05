@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +13,10 @@
 	<div class="sidebar one_quarter">
 		<!-- ################################################################################################ -->
 
+		<jsp:useBean id="toDay" class="java.util.Date" />
+		<fmt:formatDate value='${toDay}' pattern='yyyy' var="nowDate" />
+
+
 		<!-- 로그인한 사람의 신분 -->
 		<c:set var="identity" value="${ loginMember.identity }" />
 
@@ -21,28 +26,29 @@
 			<nav class="sdb_holder">
 				<ul id="sideList">
 					<li><a href="#">수강관리</a>
-            <ul>
-            	<li><a href="classApplyGuide.do">수강신청안내</a></li>
-            	<li><a href="classApplyList.do?deptno=${ loginMember.deptno }&studentno=${ loginMember.studentno }">수강신청</a>
-            </ul>
-            </li>
-            <li><a href="#">학점조회</a></li>
-            <li><a href="#">출결조회</a></li>
-            <li><a href="#">증명서 출력</a>
-            <ul>
-            	<li><a href="#">졸업증명서 출력</a></li>
-            	<li><a href="#">성적증명서 출력</a></li>
-            </ul>
-            
-            </li>
-            <li><a href="#">휴/복학신청</a>
-            <ul>
-            	<li><a href="#">휴학신청</a></li>
-            	<li><a href="#">복학신청</a></li>
-            	<li><a href="#">신청결과조회</a></li>
-            </ul>
-            </li>
-            <li><a href="#">공지사항</a></li>
+						<ul>
+							<li><a href="classApplyGuide.do">수강신청안내</a></li>
+							<li><a
+								href="classApplyList.do?deptno=${ loginMember.deptno }&studentno=${ loginMember.studentno }">수강신청</a>
+							<li><a
+								href="timeTable.do?deptno=${ loginMember.deptno }&studentno=${loginMember.studentno}">시간표
+									조회</a></li>
+						</ul></li>
+					<li><a
+						href="gradeView.do?studentno=${loginMember.studentno }">학점조회</a></li>
+					<li><a href="attendanceMain.do?studentno=${ loginMember.studentno }">출결조회</a></li>
+					<li><a href="#">증명서 출력</a>
+						<ul>
+							<li><a href="#">졸업증명서 출력</a></li>
+							<li><a href="gradePrint.do?studentno=${ loginMember.studentno }&deptno=${loginMember.deptno}&teacherno=${loginMember.teacherno}">성적증명서 출력</a></li>
+						</ul></li>
+					<li><a href="#">휴/복학신청</a>
+						<ul>
+							<li><a href="absenceInsertForm.do">휴학신청</a></li>
+							<li><a href="#">복학신청</a></li>
+							<li><a href="#">신청결과조회</a></li>
+						</ul></li>
+					<li><a href="#">공지사항</a></li>
 
 				</ul>
 			</nav>

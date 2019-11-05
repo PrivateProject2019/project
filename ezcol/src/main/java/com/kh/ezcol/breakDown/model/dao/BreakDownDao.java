@@ -31,5 +31,15 @@ public class BreakDownDao {
 		return sqlSession.insert("breakDownMapper.classApply",map);
 	}
 
+	public List<BreakDown> gradeView(HashMap<String, String> map) {
+		return sqlSession.selectList("breakDownMapper.gradeView",map);
+	}
+
+	public List<BreakDown> gradePrint(String studentno) {
+		return sqlSession.selectList("breakDownMapper.gradePrint",studentno);
+	}
+
+
+
 	
 }

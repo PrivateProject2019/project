@@ -4,6 +4,12 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="breakDownMapper">
 
+	<select id="gradePrint" parameterType="String" resultType="Breakdown">
+	
+	select * from breakdown where studentno = #{no}
+	
+	</select>
+
 
 	<select id="selectAll" parameterType="hashmap"
 		resultType="BreakDown">
@@ -24,6 +30,38 @@
 
 	</select>
 
+		<select id="gradeView" parameterType="hashmap"
+		resultType="BreakDown">
+
+		select  breakdown.classno, breakdown.score, breakdown.studentno from breakdown
+		join class on breakdown.classno = class.classno
+		where studentno = #{studentno} 
+		
+		<if test="semester == null and year == null">
+		order by class.classno desc
+		</if>
+		
+		<if test="year != null">
+		
+		and substr(class.classno,2,4) = #{year}
+		
+		</if>
+		
+		<if test="semester != null">
+		
+		<if test="semester == 1">
+		and semester = '1' order by class.classno asc 
+		</if>
+		
+		<if test="semester == 2">
+		and semester = '2' order by class.classno asc
+		</if>
+		
+		
+		</if>
+
+	</select>
+	
 
 	<delete id="classCancel" parameterType="hashmap">
 	
@@ -43,6 +81,8 @@
 	insert into breakdown (classno, studentno, score) values  (#{classno}, #{studentno}, 0)
 	
 	</insert>
-
+	
+	
+	
 
 </mapper>

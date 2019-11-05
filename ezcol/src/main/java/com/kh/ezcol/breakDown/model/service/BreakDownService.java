@@ -15,4 +15,10 @@ public interface BreakDownService {
 
 	int classApply(HashMap<String, String> map);
 
+	List<BreakDown> gradeView(HashMap<String, String> map);
+
+	List<BreakDown> gradePrint(String studentno);
+
+	
+
 }

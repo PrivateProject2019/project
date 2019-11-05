@@ -36,5 +36,17 @@ public class BreakDownServiceImpl implements BreakDownService {
 		return breakdownDao.classApply(map);
 	}
 
+	@Override
+	public List<BreakDown> gradeView(HashMap<String, String> map) {
+		return breakdownDao.gradeView(map);
+	}
+
+	@Override
+	public List<BreakDown> gradePrint(String studentno) {
+		return breakdownDao.gradePrint(studentno);
+	}
+
+
+
 	
 }

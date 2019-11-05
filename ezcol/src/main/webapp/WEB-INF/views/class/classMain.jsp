@@ -125,7 +125,7 @@ button {
 						<c:forEach var="classInfo" items="${ list }">
 
 							<tr
-								onclick="location.href='detailClass.do?classno=${classInfo.classno}'"
+								onclick="location.href='detailClass.do?classno=${classInfo.classno}&month=11'"
 								style="cursor: pointer" class="tr">
 
 								<td>${ classInfo.classno }</td>

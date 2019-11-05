@@ -29,6 +29,8 @@ public class ClassInfo implements Serializable{
 	
 	private String teachername;
 	private String deptname;
+	private double bScore;
+	private int addAll;
 	
 	public ClassInfo() {
 		// TODO Auto-generated constructor stub
@@ -40,31 +42,8 @@ public class ClassInfo implements Serializable{
 				+ classname + ", classtype=" + classtype + ", classday=" + classday + ", classstart=" + classstart
 				+ ", classend=" + classend + ", admission=" + admission + ", score=" + score + ", place=" + place
 				+ ", curriculum=" + curriculum + ", ofilename=" + ofilename + ", rfilename=" + rfilename + ", semester="
-				+ semester + ", teachername=" + teachername + ", deptname=" + deptname + "]";
-	}
-
-	public ClassInfo(String classno, String deptno, String teacherno, String classname, String classtype,
-			String classday, String classstart, String classend, int admission, int score, String place,
-			String curriculum, String ofilename, String rfilename, String semester, String teachername,
-			String deptname) {
-		super();
-		this.classno = classno;
-		this.deptno = deptno;
-		this.teacherno = teacherno;
-		this.classname = classname;
-		this.classtype = classtype;
-		this.classday = classday;
-		this.classstart = classstart;
-		this.classend = classend;
-		this.admission = admission;
-		this.score = score;
-		this.place = place;
-		this.curriculum = curriculum;
-		this.ofilename = ofilename;
-		this.rfilename = rfilename;
-		this.semester = semester;
-		this.teachername = teachername;
-		this.deptname = deptname;
+				+ semester + ", teachername=" + teachername + ", deptname=" + deptname + ", bScore=" + bScore
+				+ ", addAll=" + addAll + "]";
 	}
 
 	public String getClassno() {
@@ -203,10 +182,56 @@ public class ClassInfo implements Serializable{
 		this.deptname = deptname;
 	}
 
+	public double getbScore() {
+		return bScore;
+	}
+
+	public void setbScore(double bScore) {
+		this.bScore = bScore;
+	}
+
+	public int getAddAll() {
+		return addAll;
+	}
+
+	public void setAddAll(int addAll) {
+		this.addAll = addAll;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	public ClassInfo(String classno, String deptno, String teacherno, String classname, String classtype,
+			String classday, String classstart, String classend, int admission, int score, String place,
+			String curriculum, String ofilename, String rfilename, String semester, String teachername, String deptname,
+			double bScore, int addAll) {
+		super();
+		this.classno = classno;
+		this.deptno = deptno;
+		this.teacherno = teacherno;
+		this.classname = classname;
+		this.classtype = classtype;
+		this.classday = classday;
+		this.classstart = classstart;
+		this.classend = classend;
+		this.admission = admission;
+		this.score = score;
+		this.place = place;
+		this.curriculum = curriculum;
+		this.ofilename = ofilename;
+		this.rfilename = rfilename;
+		this.semester = semester;
+		this.teachername = teachername;
+		this.deptname = deptname;
+		this.bScore = bScore;
+		this.addAll = addAll;
+	}
+  
 	
+	
+	
+
 	
 	
 	

@@ -51,5 +51,13 @@ public class NoticeDao {
 		return sqlSession.selectOne("noticeMapper.classApplyGuide");
 	}
 
+	public int listCountType(String type) {
+		return sqlSession.selectOne("noticeMapper.listCountType",type);
+	}
+
+	public List<Notice> noticeType(HashMap<String, Object> map) {
+		return sqlSession.selectList("noticeMapper.noticeType",map);
+	}
+
 
 }

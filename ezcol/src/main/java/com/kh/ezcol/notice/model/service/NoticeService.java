@@ -25,4 +25,8 @@ public interface NoticeService {
 
 	Notice classApplyGuide();
 
+	int listCountType(String type);
+
+	List<Notice> noticeType(HashMap<String, Object> map);
+
 }

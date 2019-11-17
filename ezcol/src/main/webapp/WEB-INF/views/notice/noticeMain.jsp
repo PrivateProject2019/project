@@ -72,6 +72,15 @@ button {
 	background: #639fff;
 	cursor: pointer;
 }
+
+span a {
+
+font-weight: bold;
+color: #639fff;
+font-size: 13pt;
+margin-right: 20px;
+
+}
 </style>
 
 </head>
@@ -94,9 +103,23 @@ button {
 
 
 			<div class="scrollable">
+			
+				<c:if test="${ loginMember.identity eq 'E' }">
 				<h1 id="title">공지사항관리</h1>
+				</c:if>
+				
+				<c:if test="${ loginMember.identity eq 'S' }">
+				<h1 id="title">공지사항</h1>
+				</c:if>
+				
 				<h1>공지사항 전체 조회</h1>
-				<table>
+				
+				<span><a href="noticeMain.do?currentPage=1">전체</a></span>
+				<span><a href="noticeType.do?currentPage=1&type=공지사항">공지사항</a></span>
+				<span><a href="noticeType.do?currentPage=1&type=휴/복학안내">휴/복학 안내</a></span>
+				<span><a href="noticeType.do?currentPage=1&type=수강신청안내">수강신청안내</a></span>
+				
+				<table style="margin-top: 20px;">
 					<thead>
 						<tr>
 							<th>구분</th>
@@ -158,16 +181,34 @@ button {
 
 					<div id="paging">
 
-						
+						 
 					
 						
-						 <c:if test="${ type eq 'all' }"> 
+						 <c:if test="${ kind eq 'all' }"> 
+						 
+						 
+						 <c:if test="${ paging.startPage != 1 }">
+						 
+						 <a href="noticeMain.do?currentPage=${paging.startPage - 1}">이전</a>
+						 
+						 </c:if>
+						 
+						 
 						<c:forEach var="num" begin="${ paging.startPage }"
 							end="${ paging.endPage }">
 
 							<a href="noticeMain.do?currentPage=${num}">${num}</a>
 
 						</c:forEach>
+						
+						<c:if test="${ paging.endPage != paging.maxPage }">
+							
+						<a href="noticeMain.do?currentPage=${paging.endPage + 1}">다음</a>
+							
+						</c:if>
+						
+						
+						
 						 </c:if> 
 						 
 						 
@@ -176,13 +217,28 @@ button {
 						
 						
 						
-						<c:if test="${ type eq 'search' }">
+						<c:if test="${ kind eq 'sort' }">
+						
+						
+						<c:if test="${ paging.startPage != 1 }">
+						 
+						 <a href="noticeType.do?currentPage=${paging.startPage - 1}&type=${type}">이전</a>
+						 
+						 </c:if>
+						
 						<c:forEach var="num" begin="${ paging.startPage }"
 							end="${ paging.endPage }">
 
-							<a href="searchNotice.do?currentPage=${num}&keyword=${ keyword }">${num}</a>
+							<a href="noticeType.do?currentPage=${num}&type=${ type }">${num}</a>
 
 						</c:forEach>
+						
+						
+						<c:if test="${ paging.endPage != paging.maxPage }">
+							
+						<a href="noticeType.do?currentPage=${paging.endPage + 1}&type=${type}">다음</a>
+							
+						</c:if>
 						
 						</c:if>
 						
@@ -194,7 +250,7 @@ button {
 
 
 
-				<div style="text-align: center;">
+				<!-- <div style="text-align: center;">
 					<div id="searchDiv">
 						<div style="margin: 0 auto;">
 							<form action="searchNotice.do">
@@ -208,7 +264,7 @@ button {
 						</div>
 	
 					</div>
-				</div>
+				</div> -->
 
 			</div>
 

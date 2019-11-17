@@ -61,6 +61,8 @@ public class ClassInfoController {
 	@RequestMapping("classApplyList.do")
 	public ModelAndView classApplyList(String studentno, String deptno,@RequestParam(value="keyword", required=false) String keyword ,ModelAndView mv) {
 
+		
+		//현재 학기 구하기 
 		String now = new SimpleDateFormat("yyyyMM").format(new java.util.Date());
 
 		String value = now.substring(4);
@@ -243,6 +245,7 @@ public class ClassInfoController {
 
 	}
 
+	//강의추가 
 	@RequestMapping(value = "insertClass.do", method = RequestMethod.POST)
 	public ModelAndView insert(MultipartHttpServletRequest mtfRequest, HttpServletRequest request, ClassInfo classInfo,
 			ModelAndView mv) {

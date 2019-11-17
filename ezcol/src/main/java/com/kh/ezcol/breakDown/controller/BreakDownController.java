@@ -22,6 +22,7 @@ import com.kh.ezcol.breakDown.model.vo.BreakDown;
 import com.kh.ezcol.classInfo.model.service.ClassInfoService;
 import com.kh.ezcol.classInfo.model.vo.ClassInfo;
 import com.kh.ezcol.student.model.service.StudentService;
+import com.kh.ezcol.survey.model.service.SurveyService;
 
 @Controller
 public class BreakDownController {
@@ -224,6 +225,8 @@ public class BreakDownController {
 
 			classInfo.setDeptname(deptName);
 			classInfo.setTeachername(teacherName);
+			
+			
 
 			list.add(classInfo);
 
@@ -294,84 +297,6 @@ public class BreakDownController {
 		return mv;
 	}
 
-	// 학점 조회 메인
-	@RequestMapping("gradeView.do")
-	public ModelAndView gradeView(String studentno, @RequestParam(value = "year", required = false) String year,
-			@RequestParam(value = "semester", required = false) String semester, ModelAndView mv) {
-
-		logger.info("선택한 년도 : " + year);
-		logger.info("선택한 학기 : " + semester);
-
-		HashMap<String, String> map2 = new HashMap<String, String>();
-
-		map2.put("studentno", studentno);
-
-		List<BreakDown> breakDownList2 = breakDownService.gradeView(map2);
-
-		List<ClassInfo> list2 = new ArrayList<ClassInfo>();
-
-		for (BreakDown breakDown : breakDownList2) {
-			ClassInfo classInfo = classInfoService.selectOne(breakDown.getClassno());
-
-			String deptName = studentService.getDeptName(classInfo.getDeptno());
-			String teacherName = studentService.getTeacherName(classInfo.getTeacherno());
-
-			classInfo.setbScore(breakDown.getScore());
-			classInfo.setDeptname(deptName);
-			classInfo.setTeachername(teacherName);
-
-			list2.add(classInfo);
-
-		}
-
-		HashMap<String, String> map = new HashMap<String, String>();
-
-		map.put("studentno", studentno);
-		map.put("semester", semester);
-
-		if (year != null) {
-			map.put("year", year);
-		}
-
-		// 로그인한 학생의 이번학기 이번년도 신청한 수업 명세서 리스트 가져옴
-		List<BreakDown> breakDownList = breakDownService.gradeView(map);
-		logger.info("list Size : " + breakDownList.size());
-
-		// 명세서의 학점 총합
-		int addAll = 0;
-
-		for (BreakDown breakDown : breakDownList) {
-			ClassInfo classInfo = classInfoService.selectOne(breakDown.getClassno());
-			addAll += classInfo.getScore();
-		}
-
-		// 화면에 출력될 로그인한 학생이 수강신청한 수업 정보 리스트
-		List<ClassInfo> list = new ArrayList<ClassInfo>();
-
-		for (BreakDown breakDown : breakDownList) {
-			ClassInfo classInfo = classInfoService.selectOne(breakDown.getClassno());
-
-			String deptName = studentService.getDeptName(classInfo.getDeptno());
-			String teacherName = studentService.getTeacherName(classInfo.getTeacherno());
-
-			classInfo.setbScore(breakDown.getScore());
-			classInfo.setDeptname(deptName);
-			classInfo.setTeachername(teacherName);
-
-			list.add(classInfo);
-
-		}
-
-		logger.info("명세서 학점의 총합 : " + addAll);
-
-		mv.setViewName("grade/gradeView");
-		mv.addObject("addAll", addAll);
-		mv.addObject("list", list);
-		mv.addObject("year", year);
-		mv.addObject("semester", semester);
-		mv.addObject("list2", list2);
-
-		return mv;
-	}
+	
 
 }

@@ -214,7 +214,9 @@ table a {
 			src="resources/js/jquery.mobilemenu.js"></script> <script
 			type="text/javascript">
 				
-			</script> <script type="text/javascript">
+			</script>
+			
+			 <script type="text/javascript">
 				function confirmFunction() {
 
 					if (confirm("정말 삭제하시겠습니까?")) {

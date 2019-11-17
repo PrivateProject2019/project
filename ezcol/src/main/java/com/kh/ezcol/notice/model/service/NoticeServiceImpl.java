@@ -59,5 +59,15 @@ public class NoticeServiceImpl implements NoticeService {
 	public Notice classApplyGuide() {
 		return noticeDao.classApplyGuide();
 	}
+
+	@Override
+	public int listCountType(String type) {
+		return noticeDao.listCountType(type);
+	}
+
+	@Override
+	public List<Notice> noticeType(HashMap<String, Object> map) {
+		return noticeDao.noticeType(map);
+	}
 	
 }

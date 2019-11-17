@@ -32,7 +32,7 @@ public class Paging implements Serializable {
 	
 	private int endRow;  //쿼리에서 검색할 끝 행 수 
 	
-	private int underlimit = 10; // 프론트 하단 페이지 개수 
+	private int underlimit = 5; // 프론트 하단 페이지 개수 
 	
 	public Paging() {
 		// TODO Auto-generated constructor stub
@@ -47,7 +47,8 @@ public class Paging implements Serializable {
 		this.setListCount(listCount);
 		
 		this.setMaxPage((int)((double)listCount / limit + add));
-		this.setStartPage((int)((double)currentPage / underlimit + add));
+		//this.setStartPage((int)((double)currentPage / underlimit + add));
+		this.setStartPage(    ((curPage -1)/ underlimit) * underlimit + 1      );
 		this.setEndPage(startPage + underlimit - 1);
 		this.setStartRow((curPage -1 ) * limit +1 );
 		this.setEndRow( startRow + limit - 1 );

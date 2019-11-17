@@ -19,7 +19,7 @@ public class ClassInfo implements Serializable{
 	private String classday;
 	private String classstart;
 	private String classend;
-	private int admission;
+	private int admission; // 수업 정원 
 	private int score;
 	private String place;
 	private String curriculum;
@@ -30,10 +30,39 @@ public class ClassInfo implements Serializable{
 	private String teachername;
 	private String deptname;
 	private double bScore;
-	private int addAll;
+	private int addAll; //총 인원수 
+	
+	private String survey;
 	
 	public ClassInfo() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public ClassInfo(String classno, String deptno, String teacherno, String classname, String classtype,
+			String classday, String classstart, String classend, int admission, int score, String place,
+			String curriculum, String ofilename, String rfilename, String semester, String teachername, String deptname,
+			double bScore, int addAll, String survey) {
+		super();
+		this.classno = classno;
+		this.deptno = deptno;
+		this.teacherno = teacherno;
+		this.classname = classname;
+		this.classtype = classtype;
+		this.classday = classday;
+		this.classstart = classstart;
+		this.classend = classend;
+		this.admission = admission;
+		this.score = score;
+		this.place = place;
+		this.curriculum = curriculum;
+		this.ofilename = ofilename;
+		this.rfilename = rfilename;
+		this.semester = semester;
+		this.teachername = teachername;
+		this.deptname = deptname;
+		this.bScore = bScore;
+		this.addAll = addAll;
+		this.survey = survey;
 	}
 
 	@Override
@@ -43,7 +72,7 @@ public class ClassInfo implements Serializable{
 				+ ", classend=" + classend + ", admission=" + admission + ", score=" + score + ", place=" + place
 				+ ", curriculum=" + curriculum + ", ofilename=" + ofilename + ", rfilename=" + rfilename + ", semester="
 				+ semester + ", teachername=" + teachername + ", deptname=" + deptname + ", bScore=" + bScore
-				+ ", addAll=" + addAll + "]";
+				+ ", addAll=" + addAll + ", survey=" + survey + "]";
 	}
 
 	public String getClassno() {
@@ -198,42 +227,19 @@ public class ClassInfo implements Serializable{
 		this.addAll = addAll;
 	}
 
+	public String getSurvey() {
+		return survey;
+	}
+
+	public void setSurvey(String survey) {
+		this.survey = survey;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	public ClassInfo(String classno, String deptno, String teacherno, String classname, String classtype,
-			String classday, String classstart, String classend, int admission, int score, String place,
-			String curriculum, String ofilename, String rfilename, String semester, String teachername, String deptname,
-			double bScore, int addAll) {
-		super();
-		this.classno = classno;
-		this.deptno = deptno;
-		this.teacherno = teacherno;
-		this.classname = classname;
-		this.classtype = classtype;
-		this.classday = classday;
-		this.classstart = classstart;
-		this.classend = classend;
-		this.admission = admission;
-		this.score = score;
-		this.place = place;
-		this.curriculum = curriculum;
-		this.ofilename = ofilename;
-		this.rfilename = rfilename;
-		this.semester = semester;
-		this.teachername = teachername;
-		this.deptname = deptname;
-		this.bScore = bScore;
-		this.addAll = addAll;
-	}
-  
-	
-	
-	
-
-	
-	
+   	
 	
    
 	

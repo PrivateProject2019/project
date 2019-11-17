@@ -17,6 +17,10 @@
 		<typeAlias type="com.kh.ezcol.breakDown.model.vo.BreakDown" alias="BreakDown"/>
 		<typeAlias type="com.kh.ezcol.attendance.model.vo.Attendance" alias="Attendance"/>
 		<typeAlias type="com.kh.ezcol.absence.model.vo.Absence" alias="Absence"/>
+		<typeAlias type="com.kh.ezcol.recall.model.vo.Recall" alias="Recall"/>
+		<typeAlias type="com.kh.ezcol.article.model.vo.Article" alias="Article"/>
+		<typeAlias type="com.kh.ezcol.onoff.model.vo.Onoff" alias="Onoff"/>
+		<typeAlias type="com.kh.ezcol.survey.model.vo.Survey" alias="Survey"/>
 	</typeAliases>
 
 
@@ -33,6 +37,11 @@
 		<mapper resource="mappers/breakDown-mapper.xml" />
 		<mapper resource="mappers/attendance-mapper.xml" />
 		<mapper resource="mappers/absence-mapper.xml" />	
+		<mapper resource="mappers/recall-mapper.xml" />
+		<mapper resource="mappers/grade-mapper.xml" />
+		<mapper resource="mappers/article-mapper.xml" />
+		<mapper resource="mappers/onoff-mapper.xml" />
+		<mapper resource="mappers/survey-mapper.xml" />
 	</mappers>
 
 </configuration>

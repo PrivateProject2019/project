@@ -347,7 +347,7 @@ input {
 			
 			
 			//학과 이름 불러오기 
-$("input[name=deptno]").keyup(function(){
+				$("input[name=deptno]").keyup(function(){
                 
                 
                 $.ajax({

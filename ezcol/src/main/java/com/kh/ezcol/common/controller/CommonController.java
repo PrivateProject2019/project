@@ -1,5 +1,7 @@
 package com.kh.ezcol.common.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.ezcol.article.model.service.ArticleService;
+import com.kh.ezcol.article.model.vo.Article;
 import com.kh.ezcol.common.model.vo.Common;
 import com.kh.ezcol.employee.model.service.EmployeeService;
 import com.kh.ezcol.employee.model.vo.Employee;
@@ -33,11 +37,36 @@ public class CommonController {
 	
 	@Autowired
 	private TeacherService teacherService;
+	
+	@Autowired
+	private ArticleService articleService;
 
+	
+	
+	//홈페이지로 이동 
 	@RequestMapping("home.do")
-	public String main() {
+	public ModelAndView main(ModelAndView mv) {
 
-		return "home";
+		
+		
+		
+		List<Article> list = articleService.homeArticle();
+		
+		if(list != null) {
+			
+			mv.addObject("article1", list.get(0));
+			mv.addObject("article2", list.get(1));
+			mv.addObject("article3", list.get(2));
+		
+		}
+		
+		logger.info("size : " + list.size());
+		
+		
+		mv.setViewName("home");
+		
+		
+		return mv;
 	}
 
 	@RequestMapping("loginForm.do")
@@ -46,6 +75,8 @@ public class CommonController {
 		if(message != null) {
 			mv.addObject("message", message);
 		}
+		
+		
 		
 		mv.setViewName("login");
 		
@@ -58,7 +89,8 @@ public class CommonController {
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public ModelAndView login(Common common, HttpSession session,ModelAndView mv) {
 
-	
+		
+		logger.info("login.do run...");
 
 		// 학생 로그인일때
 		if (common.getType().equals("student")) {
@@ -72,7 +104,7 @@ public class CommonController {
 				student.setDeptname(studentService.getDeptName(student.getDeptno()));
 				session.setAttribute("loginMember", student);
 
-				mv.setViewName("home");
+				mv.setViewName("redirect:home.do");
 
 			}else {
 				mv.addObject("message", "아이디, 비밀번호를 확인해주세요");
@@ -88,7 +120,7 @@ public class CommonController {
 
 				session.setAttribute("loginMember", employee);
 
-				mv.setViewName("home");
+				mv.setViewName("redirect:home.do");
 
 			}else {
 				mv.addObject("message", "아이디, 비밀번호를 확인해주세요");
@@ -99,12 +131,13 @@ public class CommonController {
 		}else if(common.getType().equals("teacher")) {
 			logger.info("login : " + common.toString());
 			Teacher teacher = teacherService.login(common);
+			teacher.setDeptname(studentService.getDeptName(teacher.getDeptno()));
 
 			if (teacher != null) {
 
 				session.setAttribute("loginMember", teacher);
 
-				mv.setViewName("home");
+				mv.setViewName("redirect:home.do");
 				
 				
 			}else {
@@ -119,7 +152,7 @@ public class CommonController {
 
 	// 로그아웃 컨트롤러
 	@RequestMapping("logout.do")
-	public String logout(HttpSession session, HttpServletRequest request) {
+	public ModelAndView logout(HttpSession session, HttpServletRequest request, ModelAndView mv) {
 
 		session = request.getSession(false);
 
@@ -127,7 +160,9 @@ public class CommonController {
 			session.invalidate();
 		}
 		
-		return "home";
+		mv.setViewName("redirect:home.do");
+		
+		return mv;
 
 	}
 

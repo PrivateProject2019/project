@@ -38,37 +38,36 @@ Licence URI: https://www.os-templates.com/template-terms
     <!-- ################################################################################################ -->
     <div class="flexslider basicslider">
       <ul class="slides">
-        <li><img src="resources/images/01.png" alt="">
+        <li><img src="resources/images/main3.jpg">
           <div class="txtoverlay">
             <div class="centralise">
               <div class="verticalwrap">
                 <article>
-                  <h2 class="heading uppercase">ivamus commodo mi a lobortis ultrices</h2>
-                  <p><a class="btn orange pushright" href="#">Leo facilisis odio</a> <a class="btn red" href="#">Quis mollis nibh dolor</a></p>
+                  <h2 class="heading uppercase" style="font-size: 60pt; text-shadow: 2px 2px 3px black;">Place Holder</h2>
                 </article>
               </div>
             </div>
           </div>
         </li>
-        <li><img src="resources/images/02.png" alt="">
+        <li><img src="resources/images/main1.jpg" alt="">
           <div class="txtoverlay">
             <div class="centralise">
               <div class="verticalwrap">
                 <article>
-                  <h2 class="heading uppercase">Curabitur ullamcorper malesuada tempor</h2>
-                  <p><a class="btn red" href="#">Suspendisse lobortis mauris</a></p>
+                  <h2 class="heading uppercase" style="font-size: 60pt; text-shadow: 2px 2px 3px black;">
+                  Curabitur ullamcorper malesuada tempor</h2>
                 </article>
               </div>
             </div>
           </div>
         </li>
-        <li><img src="resources/images/03.png" alt="">
+        <li><img src="resources/images/main2.jpg" alt="">
           <div class="txtoverlay">
             <div class="centralise">
               <div class="verticalwrap">
                 <article>
-                  <h2 class="heading uppercase">Fusce in nisi auctor imperdiet quam quis</h2>
-                  <p><a class="btn orange pushright" href="#">Integer posuere arcu nec</a> <a class="btn red" href="#">Odio sollicitudin sagittis</a></p>
+                  <h2 class="heading uppercase" style="font-size: 60pt; text-shadow: 2px 2px 3px black;">Fusce in nisi auctor imperdiet quam quis</h2>
+                  
                 </article>
               </div>
             </div>
@@ -88,23 +87,23 @@ Licence URI: https://www.os-templates.com/template-terms
     <div class="group">
       <div class="one_third first">
         <article class="service"><i class="icon red circle fa fa-bell-o"></i>
-          <h2 class="heading">Phasellus accumsan velit lacus</h2>
-          <p class="btmspace-10">Ut vitae mi turpis donec convallis turpis bibendum dolor hendrerit eget ultrices.</p>
-          <p><a href="#">Read More &raquo;</a></p>
+          <h2 class="heading" style="font-family: fantasy">${ article1.title }</h2>
+          <p class="btmspace-10">${ article1.head }</p>
+          <p><a href="detailArticle.do?articleno=${ article1.articleno }">Read More &raquo;</a></p>
         </article>
       </div>
       <div class="one_third">
         <article class="service"><i class="icon orange circle fa fa-bicycle"></i>
-          <h2 class="heading">Duis in dictum erat phasellus cursus</h2>
-          <p class="btmspace-10">Ut augue ante euismod vitae scelerisque non tincidunt ut velit integer et iaculis.</p>
-          <p><a href="#">Read More &raquo;</a></p>
+          <h2 class="heading" style="font-family: fantasy">${ article2.title }</h2>
+          <p class="btmspace-10">${ article2.head }</p>
+          <p><a href="detailArticle.do?articleno=${ article2.articleno }">Read More &raquo;</a></p>
         </article>
       </div>
       <div class="one_third">
         <article class="service"><i class="icon green circle fa fa-mortar-board"></i>
-          <h2 class="heading">Vivamus accumsan mollis mi in ultricies</h2>
-          <p class="btmspace-10">Nullam commodo orci ut justo bibendum tristique proin vel est at risus volutpat.</p>
-          <p><a href="#">Read More &raquo;</a></p>
+          <h2 class="heading" style="font-family: fantasy">${ article3.title }</h2>
+          <p class="btmspace-10">${ article3.head }</p>
+          <p><a href="detailArticle.do?articleno=${ article3.articleno }">Read More &raquo;</a></p>
         </article>
       </div>
     </div>
@@ -119,10 +118,11 @@ Licence URI: https://www.os-templates.com/template-terms
   <section id="cta" class="clear"> 
     <!-- ################################################################################################ -->
     <div class="three_quarter first">
-      <h2 class="heading">Fusce quis feugiat urna dui leo egestas augue</h2>
-      <p>Aenean semper elementum tellus, ut placerat leo. Quisque vehicula, urna sit amet pulvinar dapibus.</p>
+      <h2 class="heading" style="font-family: Georgia">1학기 수강 신청 기간 입니다 2019.4.20~ 2019.4.29 </h2>
+      <p>학생 여러분들은 신청기간에 유의하여 수강신청 하시기 바랍니다.</p>
+
     </div>
-    <div class="one_quarter"><a class="btn" href="#">Get it now <span class="fa fa-arrow-right"></span></a></div>
+    <div class="one_quarter"><a class="btn" href="#">수강 신청 화면으로  <span class="fa fa-arrow-right"></span></a></div>
     <!-- ################################################################################################ -->
   </section>
 </div>

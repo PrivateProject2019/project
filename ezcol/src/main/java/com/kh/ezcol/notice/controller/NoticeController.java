@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.ezcol.absence.model.vo.Absence;
 import com.kh.ezcol.common.model.vo.FileName;
 import com.kh.ezcol.common.model.vo.Paging;
 import com.kh.ezcol.employee.controller.EmployeeController;
@@ -43,13 +44,14 @@ public class NoticeController {
 	@Autowired
 	private Paging paging;
 
+	// 공지사항 작성 폼
 	@RequestMapping("insertNoticeForm.do")
 	public String insertNoticeForm() {
 
 		return "notice/insertNoticeForm";
 	}
 
-	//수강신청안내 
+	// 수강신청안내
 	@RequestMapping("classApplyGuide.do")
 	public ModelAndView classApplyGuide(ModelAndView mv) {
 
@@ -87,9 +89,40 @@ public class NoticeController {
 
 		return mv;
 	}
-	
-	
-	
+
+	// 공지사항 타입으로 분류
+	@RequestMapping("noticeType.do")
+	public ModelAndView absenceType(String currentPage, String type, ModelAndView mv) {
+
+		int curPage = Integer.parseInt(currentPage);
+
+		int listCount = noticeService.listCountType(type);
+
+		Paging paging = new Paging();
+
+		paging.makePage(listCount, curPage);
+
+		logger.info(paging.toString());
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
+
+		map.put("type", type);
+		map.put("startRow", paging.getStartRow());
+		map.put("endRow", paging.getEndRow());
+
+		List<Notice> list = noticeService.noticeType(map);
+
+		logger.info("list Size : " + list.size());
+
+		mv.setViewName("notice/noticeMain");
+		mv.addObject("list", list);
+		mv.addObject("kind", "sort");
+		mv.addObject("type", type);
+		mv.addObject("paging", paging);
+
+		return mv;
+	}
+
 	// 공지사항 목록 출력
 	@RequestMapping("noticeMain.do")
 	public ModelAndView empMain(@RequestParam("currentPage") String currentPage, ModelAndView mv) {
@@ -118,12 +151,13 @@ public class NoticeController {
 		mv.setViewName("notice/noticeMain");
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
-		mv.addObject("type", "all");
+		mv.addObject("kind", "all");
 
 		return mv;
 
 	}
-	
+
+	// 공지사항 추가
 	@RequestMapping(value = "insertNotice.do", method = RequestMethod.POST)
 	public ModelAndView insertNotice(MultipartHttpServletRequest mtfRequest, HttpServletRequest request, Notice notice,
 			ModelAndView mv) {
@@ -187,7 +221,7 @@ public class NoticeController {
 		return mv;
 	}
 
-	//공지사항 수정 
+	// 공지사항 수정
 	@RequestMapping("updateNoticeForm.do")
 	public ModelAndView updateNoticeForm(String noticeno, ModelAndView mv) {
 
@@ -266,6 +300,7 @@ public class NoticeController {
 		return mv;
 	}
 
+	// 공지사항 파일 다운
 	@RequestMapping("nfdown")
 	public ModelAndView noticeFileDown(ModelAndView mv, @RequestParam("ofile") String originalFileName,
 			@RequestParam("rfile") String renameFileName, HttpServletRequest request) {
@@ -289,6 +324,7 @@ public class NoticeController {
 		return mv;
 	}
 
+	// 공지사항 첨부 파일삭제
 	@RequestMapping("deleteNoticeFile.do")
 	public void deleteNoticeFile(String ofilename, String rfilename, String noticeno, HttpServletRequest request) {
 
@@ -319,19 +355,17 @@ public class NoticeController {
 		}
 
 	}
-	
-	
+
+	// 공지사항 삭제
 	@RequestMapping("deleteNotice.do")
 	public ModelAndView deleteNotice(String noticeno, ModelAndView mv, HttpServletRequest request) {
-		
-		
+
 		Notice notice = noticeService.selectOne(noticeno);
-		
-		
+
 		String[] rarray = notice.getRfilename().split(",");
-		
+
 		for (String rfilename : rarray) {
-			
+
 			String path = request.getSession().getServletContext().getRealPath("resources/nupfiles");
 			String deleteFilePath = path + "\\" + rfilename;
 
@@ -343,28 +377,25 @@ public class NoticeController {
 				deleteFile.delete();
 			}
 		}
-		
+
 		int result = noticeService.deleteNotice(noticeno);
-		
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			mv.addObject("currentPage", "1");
 			mv.setViewName("redirect:noticeMain.do");
-		}else {
+		} else {
 			mv.addObject("message", "공지사항 삭제 실패");
 			mv.setViewName("common/errorPage");
 		}
-		
+
 		return mv;
 	}
-	
-	
+
+	// 공지사항 수정
 	@RequestMapping(value = "updateNotice.do", method = RequestMethod.POST)
 	public ModelAndView updateNotice(MultipartHttpServletRequest mtfRequest, HttpServletRequest request, Notice notice,
 			ModelAndView mv) {
 
-		
-		
 		// input 태그의 이름으로 파일을 배열로 받아옴
 		List<MultipartFile> fileList = mtfRequest.getFiles("upfile");
 
@@ -381,40 +412,38 @@ public class NoticeController {
 		String ofilename = "";
 		String rfilename = "";
 
-		
 		for (MultipartFile multipartFile : fileList) {
 
-			if(multipartFile.getOriginalFilename() !="") {
-			
-			count++;
+			if (multipartFile.getOriginalFilename() != "") {
 
-			// 원본 파일명을 불러온다
-			String originalFileName = multipartFile.getOriginalFilename();
-			String renameFileName = now + originalFileName;
+				count++;
 
-			ofilename += originalFileName + ",";
-			rfilename += renameFileName + ",";
+				// 원본 파일명을 불러온다
+				String originalFileName = multipartFile.getOriginalFilename();
+				String renameFileName = now + originalFileName;
 
-			try {
-				multipartFile.transferTo(new File(path + "\\" + now + multipartFile.getOriginalFilename()));
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				ofilename += originalFileName + ",";
+				rfilename += renameFileName + ",";
+
+				try {
+					multipartFile.transferTo(new File(path + "\\" + now + multipartFile.getOriginalFilename()));
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
 
+			logger.info("파일갯수 : " + count + ", 원본파일이름 : " + ofilename + ", 수정파일이름 : " + rfilename);
+
+			notice.setOfilename(ofilename);
+			notice.setRfilename(rfilename);
+
 		}
 
-		logger.info("파일갯수 : " + count + ", 원본파일이름 : " + ofilename + ", 수정파일이름 : " + rfilename);
-
-		notice.setOfilename(ofilename);
-		notice.setRfilename(rfilename);
-		
-		}
-		
-		
 		logger.info(notice.toString());
 
 		int result = noticeService.updateNotice(notice);
@@ -429,7 +458,5 @@ public class NoticeController {
 
 		return mv;
 	}
-	
-	
 
 }

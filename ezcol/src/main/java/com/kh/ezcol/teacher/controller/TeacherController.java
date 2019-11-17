@@ -159,6 +159,7 @@ public class TeacherController {
 		return mv;
 	}
 	
+	//교수 정보 수정 
 	@RequestMapping(value="updateTeacher.do", method=RequestMethod.POST)
 	public ModelAndView updateTeacher(Teacher teacher) {
 		
@@ -182,6 +183,7 @@ public class TeacherController {
 		
 	}
 	
+	//교수 정보 삭제 
 	@RequestMapping("deleteTeacher.do")
 	public ModelAndView deleteTeacher(@RequestParam("teacherno") String no) {
 		
@@ -202,18 +204,18 @@ public class TeacherController {
 		return mv;
 	}
 	
-	
+	//교수 이름 불러오기 에이젝스 
 	@RequestMapping("getTeacherName.do")
 	public void getDeptName(String teacherno, HttpServletResponse response) {
 
 		logger.info("geTeacherName.do run...");
 		logger.info(teacherno);
 
-		response.setContentType("text/html; charset=UTF-8");
+		
 
 		String teachername = teacherService.getTeacherName(teacherno);
 		
-		
+		response.setContentType("text/html; charset=UTF-8");
 		
 		PrintWriter out = null;
 		

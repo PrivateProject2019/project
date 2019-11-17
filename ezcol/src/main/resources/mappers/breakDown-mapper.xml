@@ -16,7 +16,7 @@
 
 		select  breakdown.classno, breakdown.score, breakdown.studentno from breakdown
 		join class on breakdown.classno = class.classno
-		where substr(class.classno,2,4) = to_char(sysdate, 'YYYY') and studentno = #{studentno} and deptno = #{deptno}
+		where substr(class.classno,2,4) = to_char(sysdate, 'YYYY') and studentno = #{studentno} 
 		
 		
 		<if test="semester == 1">

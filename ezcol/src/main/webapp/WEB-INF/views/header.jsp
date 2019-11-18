@@ -15,7 +15,7 @@
 			<!-- ################################################################################################ -->
 			<div id="logo" class="fl_left">
 				<h1>
-					<a href="home.do">Colossus</a>
+					<a href="home.do">EzCol</a>
 				</h1>
 			</div>
 			<!-- ################################################################################################ -->
@@ -64,6 +64,7 @@
 											href="absenceMain.do?studentno=${loginMember.studentno}">신청결과조회</a></li>
 									</ul></li>
 								<li><a href="noticeMain.do?currentPage=1">공지사항</a></li>
+								<li><a href="articleMain.do?currentPage=1">학교소식</a></li>
 								<li><a href="#" onclick="surveyOnOffValidate()">설문지 작성</a></li>
 							</ul></li>
 					</c:if>

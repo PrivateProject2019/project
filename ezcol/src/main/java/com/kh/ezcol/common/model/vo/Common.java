@@ -9,9 +9,9 @@ public class Common implements Serializable{
 
 	private static final long serialVersionUID = 1111L;
 	
-	private String id;
-	private String password;
-	private String type;
+	private String id; //학번,교번,사번 
+	private String password; //주민번호 뒤 7자리 
+	private String type; //학생,교수,직원
 	
 	
 	public Common() {

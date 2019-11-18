@@ -49,6 +49,7 @@
 							<li><a href="absenceMain.do?studentno=${loginMember.studentno}">신청결과조회</a></li>
 						</ul></li>
 					<li><a href="noticeMain.do?currentPage=1">공지사항</a></li>
+					<li><a href="articleMain.do?currentPage=1">학교소식</a></li>
 					<li><a href="#" onclick="surveyOnOffValidate()">설문지 작성</a></li>
 
 				</ul>

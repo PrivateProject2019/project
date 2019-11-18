@@ -38,10 +38,12 @@ public class BreakDownController {
 	@Autowired
 	private StudentService studentService;
 
+	
+	//학점 증명서 출력 
 	@RequestMapping("gradePrint.do")
 	public ModelAndView gradePrint(String teacherno, String studentno, String deptno, ModelAndView mv) {
 
-		logger.info("studnetno : " + studentno);
+		logger.debug("studnetno : " + studentno);
 		
 		//학생의 학과이름 
 		String deptname = studentService.getDeptName(deptno);
@@ -62,6 +64,7 @@ public class BreakDownController {
 
 			ClassInfo classInfo = classInfoService.selectOne(breakDown.getClassno());
 			
+			//해당과목의 담당교수 이름 
 			String teachername2 = studentService.getTeacherName(classInfo.getTeacherno());
 			
 			classInfo.setTeachername(teachername2);
@@ -71,7 +74,7 @@ public class BreakDownController {
 			
 		}
 		
-		logger.info("size : " + classInfoList.size());
+		logger.debug("size : " + classInfoList.size());
 		
 		mv.setViewName("grade/gradePrint");
 		mv.addObject("list", classInfoList);
@@ -83,21 +86,24 @@ public class BreakDownController {
 		return mv;
 	}
 
-	// 수강 신청시 유효성 검사
+	//수강 신청시 유효성 검사 Ajax 통신 
 	@RequestMapping("breakDownValidate.do")
 	public void breakDownValidate(String classno, String studentno, String deptno, HttpServletResponse response) {
 
-		logger.info("breakDownValidate run...");
-		logger.info("studentno : " + studentno);
-		logger.info("classno : " + classno);
-		logger.info("deptno : " + deptno);
+		logger.debug("breakDownValidate run...");
+		logger.debug("studentno : " + studentno);
+		logger.debug("classno : " + classno);
+		logger.debug("deptno : " + deptno);
 
+		
+		/*
+		 현재 학기 구하기
+		 현재 Month가 1,2,3,4,5,6월이면 1학기 
+		 7,8,9,10,11,12월이면 2학기로 설정함 
+		 */
 		String now = new SimpleDateFormat("yyyyMM").format(new java.util.Date());
-
 		String value = now.substring(4);
-
 		String semester = "";
-
 		if (value.equals("01") || value.equals("02") || value.equals("03") || value.equals("04") || value.equals("05")
 				|| value.equals("06")) {
 			semester = "1";
@@ -105,7 +111,6 @@ public class BreakDownController {
 			semester = "2";
 		}
 
-		logger.info(semester);
 
 		response.setContentType("text/html; charset=UTF-8");
 
@@ -113,11 +118,10 @@ public class BreakDownController {
 
 		map.put("studentno", studentno);
 		map.put("semester", semester);
-		map.put("deptno", deptno);
 
 		// 로그인한 학생의 이번학기 이번년도 신청한 수업 명세서 리스트 가져옴
 		List<BreakDown> list = breakDownService.selectAll(map);
-		logger.info("list Size : " + list.size());
+		logger.debug("list Size : " + list.size());
 
 		// 1. 신청되기전에 신청한 수업학점을 더해서 23학점이 넘지않는지 확인하기
 
@@ -125,10 +129,9 @@ public class BreakDownController {
 		ClassInfo classInfo = classInfoService.selectOne(classno);
 		int score = classInfo.getScore();
 
-		logger.info("신청한 수업의 학점 : " + score);
+		logger.debug("신청한 수업의 학점 : " + score);
 
 		// 명세서의 학점 총합
-
 		int addAll = 0;
 
 		// 명세서로 수업정보 가져오기
@@ -139,6 +142,7 @@ public class BreakDownController {
 
 			classInfoList.add(classInfo2);
 
+			//각 수업의 학점을 addAll에 더함 
 			addAll += classInfo2.getScore();
 		}
 
@@ -147,18 +151,57 @@ public class BreakDownController {
 		// 신청한 수업의 현재까지 인원수
 		int count = breakDownService.countAll(classno);
 
-		logger.info("신청한 수업의 나를 제외한 현재 인원수 : " + count);
-		logger.info("명세서 학점의 총합 : " + addAll);
+		logger.debug("신청한 수업의 사용자를 제외한 현재 인원수 : " + count);
+		logger.debug("명세서 학점의 총합 : " + addAll);
 
 		// 3. 수업시간이 겹치지 않는지 확인하기
-
+		// true이면 수업시간이 중복됨, false이면 중복되지않음 
 		boolean result = false;
+		
+		//classInfo는 현재 신청한 수업정보, oldClass는 이미 신청된 수업 정보 
+		
+		/*       3      5    -> 이미 신청되어있는 수업의 시작교시 끝 교시 
+		 * 
+		 * 
+		 * 아래에 해당하는 4가지 경우 수업시간이 겹치게 됨 
+		밑의 숫자는 새로 신청하는 수업의 시작교시 끝 교시 
+		
+		i)   2       4 
 
-		for (ClassInfo classInfo2 : classInfoList) {
-			if (classInfo2.getClassday().equals(classInfo.getClassday()) && (Integer
-					.parseInt(classInfo2.getClassstart()) >= Integer.parseInt(classInfo.getClassstart())
-					|| Integer.parseInt(classInfo2.getClassend()) >= Integer.parseInt(classInfo.getClassend()))) {
+		ii)          4      6 
+
+		iii) 2              6 
+
+		iiii)    3          6  
+		 * 
+		 */
+		for (ClassInfo oldClass : classInfoList) {
+			if (oldClass.getClassday().equals(classInfo.getClassday()) && 
+					(
+					
+					// i) 		
+					(Integer.parseInt(oldClass.getClassstart()) < Integer.parseInt(classInfo.getClassstart()) &&
+					Integer.parseInt(classInfo.getClassstart()) < Integer.parseInt(oldClass.getClassend()))
+					
+					||
+					
+					// ii) 
+					 (Integer.parseInt(oldClass.getClassstart()) < Integer.parseInt(classInfo.getClassend()) && 
+					 Integer.parseInt(classInfo.getClassend()) < Integer.parseInt(oldClass.getClassend()))
+					
+					||
+					// iii) and iiii) 
+					 (Integer.parseInt(classInfo.getClassstart()) <= Integer.parseInt(oldClass.getClassstart()) &&
+					  Integer.parseInt(classInfo.getClassend()) >= Integer.parseInt(oldClass.getClassend()))
+							
+							
+							
+						)
+					
+					) {
 				result = true;
+				
+				break;
 			}
 		}
 
@@ -176,11 +219,11 @@ public class BreakDownController {
 
 		PrintWriter out = null;
 
+		//ajax로 메시지 전송 
 		try {
 			out = response.getWriter();
 			out.append(message);
 			out.flush();
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -188,16 +231,18 @@ public class BreakDownController {
 		out.close();
 	}
 
-	// 시간표 가져오기
+	//시간표 가져오기
 	@RequestMapping("timeTable.do")
 	public ModelAndView classApplyList(String studentno, String deptno, ModelAndView mv) {
 
+		/*
+		 현재 학기 구하기
+		 현재 Month가 1,2,3,4,5,6월이면 1학기 
+		 7,8,9,10,11,12월이면 2학기로 설정함 
+		 */
 		String now = new SimpleDateFormat("yyyyMM").format(new java.util.Date());
-
 		String value = now.substring(4);
-
 		String semester = "";
-
 		if (value.equals("01") || value.equals("02") || value.equals("03") || value.equals("04") || value.equals("05")
 				|| value.equals("06")) {
 			semester = "1";
@@ -209,11 +254,10 @@ public class BreakDownController {
 
 		map.put("studentno", studentno);
 		map.put("semester", semester);
-		map.put("deptno", deptno);
 
 		// 로그인한 학생의 이번학기 이번년도 신청한 수업 명세서 리스트 가져옴
 		List<BreakDown> breakDownList = breakDownService.selectAll(map);
-		logger.info("list Size : " + breakDownList.size());
+		logger.debug("list Size : " + breakDownList.size());
 
 		// 명세서를 수업정보 리스트로 바꿈
 		List<ClassInfo> list = new ArrayList<ClassInfo>();
@@ -226,13 +270,11 @@ public class BreakDownController {
 			classInfo.setDeptname(deptName);
 			classInfo.setTeachername(teacherName);
 			
-			
-
 			list.add(classInfo);
 
 		}
 
-		logger.info("현재학기 : " + semester + "학기");
+		logger.debug("현재학기 : " + semester + "학기");
 
 		mv.setViewName("class/timeTable");
 		mv.addObject("list", list);
@@ -241,7 +283,7 @@ public class BreakDownController {
 
 	}
 
-	// 수강신청
+	//학생용 수강신청
 	@RequestMapping("classApply.do")
 	public ModelAndView classApply(String classno, String studentno, String deptno, ModelAndView mv) {
 
@@ -262,17 +304,17 @@ public class BreakDownController {
 			mv.addObject("classno", classno);
 			mv.addObject("studentno", studentno);
 			mv.addObject("deptno", deptno);
-			mv.setViewName("redirect:classApplyList.do");
+			mv.setViewName("redirect:classApplyList.do"); //수강신청화면으로 돌아감 
 
 		} else {
-			mv.addObject("message", "수강신청 취소 실패");
+			mv.addObject("message", "수강신청 실패");
 			mv.setViewName("common/errorPage");
 		}
 
 		return mv;
 	}
 
-	// 수강 신청 취소
+	//학생용 수강 신청 취소
 	@RequestMapping("classCancel.do")
 	public ModelAndView classCancel(String classno, String studentno, String deptno, ModelAndView mv) {
 
@@ -287,7 +329,7 @@ public class BreakDownController {
 			mv.addObject("classno", classno);
 			mv.addObject("studentno", studentno);
 			mv.addObject("deptno", deptno);
-			mv.setViewName("redirect:classApplyList.do");
+			mv.setViewName("redirect:classApplyList.do"); //수강신청화면으로 되돌아감
 
 		} else {
 			mv.addObject("message", "수강신청 실패");

@@ -10,9 +10,9 @@ public class BreakDown implements Serializable{
 	 */
 	private static final long serialVersionUID = 7658032219691209146L;
 
-	private String classno;
-	private String studentno;
-	private double score;
+	private String classno; //강의번호 
+	private String studentno; //학생번호 
+	private double score; //평점 
 	
 	
 	public BreakDown() {

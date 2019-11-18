@@ -5,10 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<%
-	List<ClassInfo> list = (List<ClassInfo>) request.getAttribute("list");
-	List<ClassInfo> list2 = (List<ClassInfo>) request.getAttribute("list2");
-%>
+
 <!DOCTYPE html>
 <!--
 Template Name: Colossus
@@ -19,7 +16,7 @@ Licence URI: https://www.os-templates.com/template-terms
 -->
 <html>
 <head>
-<title>Enrolment</title>
+<title>수강신청</title>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -179,7 +176,7 @@ display:none;
 
 								<%--  <c:set var="loopFlag" value="true"/> --%>
 								
-							<!-- 상단 리스트가 하단 리스트와 모두 같지않을때 (즉, 하단리스트의 길이만큼의 갯수가 일치하지않을때)만 출력한다  -->
+							<!-- 상단 리스트의 수업번호와 하단 리스트의 수업번호가 모두 일치하지 않을때 (즉, 하단리스트의 길이만큼의 갯수가 일치하지않을때)만 출력한다  -->
 								
 								 <c:set var="count" value="0" />
 
@@ -193,7 +190,6 @@ display:none;
 
 									<c:if test="${ classInfo.classno eq breakdown.classno }">
 									
-									<c:set var="loopFlag" value="false" />
 									
 									</c:if>
 										

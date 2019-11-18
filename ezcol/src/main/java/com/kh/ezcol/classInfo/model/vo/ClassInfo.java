@@ -11,28 +11,28 @@ public class ClassInfo implements Serializable{
 	private static final long serialVersionUID = 2713027265467146231L;
 	
 	
-	private String classno;
-	private String deptno;
-	private String teacherno;
-	private String classname;
-	private String classtype;
-	private String classday;
-	private String classstart;
-	private String classend;
+	private String classno; //강의번호 
+	private String deptno; //학과번호 
+	private String teacherno; //담당교수번호 
+	private String classname; //강의이름
+	private String classtype; //강의종류 
+	private String classday; //강의 요일 
+	private String classstart; //강의 시작 교시 
+	private String classend; //강의 끝 교시 
 	private int admission; // 수업 정원 
-	private int score;
-	private String place;
-	private String curriculum;
-	private String ofilename;
-	private String rfilename;
-	private String semester;
-	
-	private String teachername;
-	private String deptname;
-	private double bScore;
+	private int score;   //배당 학점 
+	private String place; //강의장소 
+	private String curriculum; //커리큘럼 내용 
+	private String ofilename; //첨부파일 원본 파일명 
+	private String rfilename; //첨부파일 수정 파일명 
+	private String semester; //학기
+	 
+	private String teachername; //담당교수이름 
+	private String deptname; //학과이름 
+	private double bScore; //명세서에 해당하는 점수 
 	private int addAll; //총 인원수 
 	
-	private String survey;
+	private String survey; //설문 조사 유무 
 	
 	public ClassInfo() {
 		// TODO Auto-generated constructor stub

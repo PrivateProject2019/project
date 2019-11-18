@@ -172,12 +172,29 @@ button {
 
 
 						<c:if test="${ type eq 'all' }">
+						
+							<c:if test="${ paging.startPage != 1 }">
+
+								<a href="classMain.do?currentPage=${paging.startPage - 1}">이전</a>
+
+							</c:if>
+						
 							<c:forEach var="num" begin="${ paging.startPage }"
 								end="${ paging.endPage }">
 
 								<a href="classMain.do?currentPage=${num}">${num}</a>
 
 							</c:forEach>
+							
+							
+							<c:if test="${ paging.endPage != paging.maxPage }">
+
+								<a href="classMain.do?currentPage=${paging.endPage + 1}">다음</a>
+
+							</c:if>
+							
+							
+							
 						</c:if>
 
 
@@ -187,12 +204,25 @@ button {
 
 
 						<c:if test="${ type eq 'search' }">
+						
+						<c:if test="${ paging.startPage != 1 }">
+
+								<a href="searchClass.do?currentPage=${paging.startPage - 1}&keyword=${keywrod}">이전</a>
+
+							</c:if>
+						
 							<c:forEach var="num" begin="${ paging.startPage }"
 								end="${ paging.endPage }">
 
 								<a href="searchClass.do?currentPage=${num}&keyword=${ keyword }">${num}</a>
 
 							</c:forEach>
+							
+							<c:if test="${ paging.endPage != paging.maxPage }">
+
+								<a href="searchClass.do?currentPage=${paging.endPage + 1}&keyword=${keyword}">다음</a>
+
+							</c:if>
 
 						</c:if>
 

@@ -29,9 +29,7 @@ public class EmployeeController {
 	private Paging paging;
 	
 	
-	
-	
-	//직원 작성 폼으로 이동 
+	//직원 정보 작성 폼으로 이동 
 	@RequestMapping("insertEmpForm.do")
 	public String insertEmpForm() {
 		
@@ -42,11 +40,9 @@ public class EmployeeController {
 	@RequestMapping("empMain.do")
 	public ModelAndView empMain(@RequestParam("currentPage") String currentPage, ModelAndView mv) {
 
-
+		//페이징처리 
 		int curPage = Integer.valueOf(currentPage);
-
 		int listCount = employeeService.listCount();
-
 		paging.makePage(listCount, curPage);
 		
 
@@ -55,14 +51,14 @@ public class EmployeeController {
 		map.put("startRow", paging.getStartRow());
 		map.put("endRow", paging.getEndRow());
 
-		logger.info(paging.toString());
+		logger.debug(paging.toString());
 
 		List<Employee> list = employeeService.selectAll(map);
 
 		mv.setViewName("employee/empMain");
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
-		mv.addObject("type", "all");
+		mv.addObject("type", "all"); //출력타입은 전체(all) 과 검색(search)로 나뉘어져있음 
 
 		return mv;
 
@@ -73,30 +69,28 @@ public class EmployeeController {
 	public ModelAndView searchEmp(@RequestParam("keyword") String keyword, 
 			@RequestParam("currentPage") String currentPage ,ModelAndView mv) {
 
-
+		//페이징처리 
 		int curPage = Integer.valueOf(currentPage);
-
 		int listCount = employeeService.searchListCount(keyword);
-		
 		paging.makePage(listCount, curPage);
+		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 
 		map.put("startRow", paging.getStartRow());
 		map.put("endRow", paging.getEndRow());
-		map.put("keyword", keyword);
+		map.put("keyword", keyword); //검색어 
 		
 		List<Employee> list = employeeService.searchEmp(map);
 		
 		
-		logger.info(keyword);
-		logger.info(paging.toString());
+		logger.debug(keyword);
+		logger.debug(paging.toString());
 
-		
 
 		mv.setViewName("employee/empMain");
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
-		mv.addObject("type","search");
+		mv.addObject("type","search"); //출력타입은 전체(all) 과 검색(search)로 나뉘어져있음 
 		mv.addObject("keyword",keyword);
 
 		return mv;
@@ -108,7 +102,6 @@ public class EmployeeController {
 	//직원 추가 
 	@RequestMapping(value="insertEmp.do", method=RequestMethod.POST)
 	public ModelAndView insertEmp(Employee employee, ModelAndView mv) {
-		
 		
 		int result = employeeService.insertEmp(employee);
 		
@@ -163,7 +156,7 @@ public class EmployeeController {
 	@RequestMapping(value="updateEmp.do", method=RequestMethod.POST)
 	public ModelAndView updateEmp(Employee employee, ModelAndView mv) {
 		
-		logger.info(employee.toString());
+		logger.debug(employee.toString());
 		
 		int result = employeeService.updateEmp(employee);
 		
@@ -185,7 +178,7 @@ public class EmployeeController {
 	@RequestMapping("deleteEmp.do")
 	public ModelAndView deleteEmp(@RequestParam("empno") String empno, ModelAndView mv) {
 		
-		logger.info(empno);
+		logger.debug(empno);
 		
 		int result = employeeService.deleteEmp(empno);
 

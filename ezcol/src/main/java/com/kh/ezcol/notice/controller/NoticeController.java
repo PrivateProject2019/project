@@ -39,9 +39,6 @@ public class NoticeController {
 	private NoticeService noticeService;
 
 	@Autowired
-	private FileName filename;
-
-	@Autowired
 	private Paging paging;
 
 	// 공지사항 작성 폼
@@ -51,13 +48,13 @@ public class NoticeController {
 		return "notice/insertNoticeForm";
 	}
 
-	// 수강신청안내
+	//수강신청시 수강신청안내
 	@RequestMapping("classApplyGuide.do")
 	public ModelAndView classApplyGuide(ModelAndView mv) {
 
 		Notice notice = noticeService.classApplyGuide();
 
-		if (notice.getOfilename() != null) {
+		if (notice != null &&notice.getOfilename() != null) {
 
 			List<FileName> fileList = new ArrayList<FileName>();
 
@@ -77,7 +74,7 @@ public class NoticeController {
 		}
 
 		if (notice != null) {
-			String empname = noticeService.getEmpName(notice.getEmpno());
+			String empname = noticeService.getEmpName(notice.getEmpno()); //작성자 이름 가져오기 
 			notice.setEmpname(empname);
 			mv.addObject("notice", notice);
 			mv.setViewName("notice/noticeDetail");
@@ -94,30 +91,29 @@ public class NoticeController {
 	@RequestMapping("noticeType.do")
 	public ModelAndView absenceType(String currentPage, String type, ModelAndView mv) {
 
+		//페이징 처리 
 		int curPage = Integer.parseInt(currentPage);
-
 		int listCount = noticeService.listCountType(type);
-
 		Paging paging = new Paging();
 
 		paging.makePage(listCount, curPage);
 
-		logger.info(paging.toString());
+		logger.debug(paging.toString());
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
 
-		map.put("type", type);
+		map.put("type", type); //공지사항 타입 
 		map.put("startRow", paging.getStartRow());
 		map.put("endRow", paging.getEndRow());
 
 		List<Notice> list = noticeService.noticeType(map);
 
-		logger.info("list Size : " + list.size());
+		logger.debug("list Size : " + list.size());
 
 		mv.setViewName("notice/noticeMain");
 		mv.addObject("list", list);
-		mv.addObject("kind", "sort");
-		mv.addObject("type", type);
+		mv.addObject("kind", "sort"); //출력타입은 전체(all) 과 분류(sort)로 나뉘어져있음 
+		mv.addObject("type", type); 
 		mv.addObject("paging", paging);
 
 		return mv;
@@ -127,10 +123,9 @@ public class NoticeController {
 	@RequestMapping("noticeMain.do")
 	public ModelAndView empMain(@RequestParam("currentPage") String currentPage, ModelAndView mv) {
 
+		//페이징처리 
 		int curPage = Integer.valueOf(currentPage);
-
 		int listCount = noticeService.listCount();
-
 		paging.makePage(listCount, curPage);
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -138,7 +133,7 @@ public class NoticeController {
 		map.put("startRow", paging.getStartRow());
 		map.put("endRow", paging.getEndRow());
 
-		logger.info(paging.toString());
+		logger.debug(paging.toString());
 
 		List<Notice> list = noticeService.selectAll(map);
 
@@ -151,13 +146,13 @@ public class NoticeController {
 		mv.setViewName("notice/noticeMain");
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
-		mv.addObject("kind", "all");
+		mv.addObject("kind", "all");  //출력타입은 전체(all) 과 분류(sort)로 나뉘어져있음 
 
 		return mv;
 
 	}
 
-	// 공지사항 추가
+	//직원용 공지사항 추가
 	@RequestMapping(value = "insertNotice.do", method = RequestMethod.POST)
 	public ModelAndView insertNotice(MultipartHttpServletRequest mtfRequest, HttpServletRequest request, Notice notice,
 			ModelAndView mv) {
@@ -186,6 +181,7 @@ public class NoticeController {
 			String originalFileName = multipartFile.getOriginalFilename();
 			String renameFileName = now + originalFileName;
 
+			//","를 구분자로하여 파일명을 전부 합침 
 			ofilename += originalFileName + ",";
 			rfilename += renameFileName + ",";
 
@@ -221,13 +217,13 @@ public class NoticeController {
 		return mv;
 	}
 
-	// 공지사항 수정
+	//직원용 공지사항 수정
 	@RequestMapping("updateNoticeForm.do")
 	public ModelAndView updateNoticeForm(String noticeno, ModelAndView mv) {
 
 		Notice notice = noticeService.selectOne(noticeno);
 
-		if (notice.getOfilename() != null) {
+		if (notice != null && notice.getOfilename() != null) {
 
 			List<FileName> fileList = new ArrayList<FileName>();
 
@@ -267,7 +263,7 @@ public class NoticeController {
 
 		Notice notice = noticeService.selectOne(noticeno);
 
-		if (notice.getOfilename() != null) {
+		if (notice != null && notice.getOfilename() != null) {
 
 			List<FileName> fileList = new ArrayList<FileName>();
 
@@ -323,8 +319,8 @@ public class NoticeController {
 
 		return mv;
 	}
-
-	// 공지사항 첨부 파일삭제
+ 
+	//직원용 공지사항 첨부 파일삭제 Ajax
 	@RequestMapping("deleteNoticeFile.do")
 	public void deleteNoticeFile(String ofilename, String rfilename, String noticeno, HttpServletRequest request) {
 
@@ -344,7 +340,7 @@ public class NoticeController {
 			String path = request.getSession().getServletContext().getRealPath("resources/nupfiles");
 			String deleteFilePath = path + "\\" + rfilename;
 
-			logger.info("삭제할 파일 이름 : " + ofilename + ", " + rfilename);
+			logger.debug("삭제할 파일 이름 : " + ofilename + ", " + rfilename);
 
 			File deleteFile = new File(deleteFilePath);
 
@@ -356,7 +352,7 @@ public class NoticeController {
 
 	}
 
-	// 공지사항 삭제
+	//직원용 공지사항 삭제
 	@RequestMapping("deleteNotice.do")
 	public ModelAndView deleteNotice(String noticeno, ModelAndView mv, HttpServletRequest request) {
 
@@ -369,7 +365,7 @@ public class NoticeController {
 			String path = request.getSession().getServletContext().getRealPath("resources/nupfiles");
 			String deleteFilePath = path + "\\" + rfilename;
 
-			logger.info("삭제할 파일 이름 : " + rfilename);
+			logger.debug("삭제할 파일 이름 : " + rfilename);
 
 			File deleteFile = new File(deleteFilePath);
 
@@ -391,7 +387,7 @@ public class NoticeController {
 		return mv;
 	}
 
-	// 공지사항 수정
+	//직원용 공지사항 수정
 	@RequestMapping(value = "updateNotice.do", method = RequestMethod.POST)
 	public ModelAndView updateNotice(MultipartHttpServletRequest mtfRequest, HttpServletRequest request, Notice notice,
 			ModelAndView mv) {
@@ -428,23 +424,21 @@ public class NoticeController {
 				try {
 					multipartFile.transferTo(new File(path + "\\" + now + multipartFile.getOriginalFilename()));
 				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
 			}
 
-			logger.info("파일갯수 : " + count + ", 원본파일이름 : " + ofilename + ", 수정파일이름 : " + rfilename);
+			logger.debug("파일갯수 : " + count + ", 원본파일이름 : " + ofilename + ", 수정파일이름 : " + rfilename);
 
 			notice.setOfilename(ofilename);
 			notice.setRfilename(rfilename);
 
 		}
 
-		logger.info(notice.toString());
+		logger.debug(notice.toString());
 
 		int result = noticeService.updateNotice(notice);
 

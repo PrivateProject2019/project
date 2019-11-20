@@ -131,10 +131,11 @@ public class CommonController {
 		}else if(common.getType().equals("teacher")) {
 			logger.info("login : " + common.toString());
 			Teacher teacher = teacherService.login(common);
-			teacher.setDeptname(studentService.getDeptName(teacher.getDeptno()));
+		
 
 			if (teacher != null) {
 
+				teacher.setDeptname(studentService.getDeptName(teacher.getDeptno()));
 				session.setAttribute("loginMember", teacher);
 
 				mv.setViewName("redirect:home.do");
@@ -145,7 +146,9 @@ public class CommonController {
 				mv.setViewName("login");
 			} 
 		}
-
+		
+		
+		
 		return mv;
 
 	}

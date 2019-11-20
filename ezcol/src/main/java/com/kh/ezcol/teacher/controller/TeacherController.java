@@ -39,15 +39,14 @@ public class TeacherController {
 		return "teacher/teacherInsertForm";
 	}
 
-	// 교수 목록 출력
+	//직원 교수 목록 출력
 	@RequestMapping("teacherMain.do")
 
 	public ModelAndView teahcerMain(@RequestParam("currentPage") String currentPage, ModelAndView mv) {
 
+		//페이징처리 
 		int curPage = Integer.valueOf(currentPage);
-
-		int listCount = teacherService.listCount();
-
+		int listCount = teacherService.listCount(); //DB에 존재하는 총 교수 Row수를 가져옴 
 		paging.makePage(listCount, curPage);
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -55,29 +54,30 @@ public class TeacherController {
 		map.put("startRow", paging.getStartRow());
 		map.put("endRow", paging.getEndRow());
 
-		logger.info(paging.toString());
+		logger.debug(paging.toString());
 
 		List<Teacher> list = teacherService.selectAll(map);
 
 		mv.setViewName("teacher/teacherMain");
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
-		mv.addObject("type", "all");
+		mv.addObject("type", "all"); //출력타입은 전체(all) 과 검색(search)로 나뉘어져있음 
 
 		return mv;
 
 	}
 
-	// 교수 검색
+	//직원용 교수 검색
 	@RequestMapping(value = "searchTeacher.do")
 	public ModelAndView searchEmp(@RequestParam("keyword") String keyword,
 			@RequestParam("currentPage") String currentPage, ModelAndView mv) {
 
+		//페이징처리 
 		int curPage = Integer.valueOf(currentPage);
-
-		int listCount = teacherService.searchListCount(keyword);
-
+		int listCount = teacherService.searchListCount(keyword); //DB에 키워드로 검색한 총 교수 Row수를 가져옴
 		paging.makePage(listCount, curPage);
+		
+		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 
 		map.put("startRow", paging.getStartRow());
@@ -86,27 +86,35 @@ public class TeacherController {
 
 		List<Teacher> list = teacherService.searchTeacher(map);
 
-		logger.info(keyword);
-		logger.info(paging.toString());
-		logger.info("listSize : " + list.size());
+		if(list.size() != 0) {
+		
+		logger.debug(keyword);
+		logger.debug(paging.toString());
+		logger.debug("listSize : " + list.size());
 
 		mv.setViewName("teacher/teacherMain");
 		mv.addObject("paging", paging);
 		mv.addObject("list", list);
 		mv.addObject("type", "search");
 		mv.addObject("keyword", keyword);
+		
+		}else {
+			mv.setViewName("common/errorPage");
+			mv.addObject("message","교수 정보 검색 실패");
+		}
 
 		return mv;
 
 	}
 
-	// 교수 추가
+	//직원용 교수 정보 추가
 	@RequestMapping(value = "insertTeacher.do", method = RequestMethod.POST)
 	public ModelAndView insertTeacher(Teacher teacher) {
 
+		//status라는 필드명 때문에 HttpServelt의 필드명과 중복되는 문제때문에 매개변수가 아닌 객체생성함
 		ModelAndView mv = new ModelAndView();
 
-		logger.info("교수 추가 : " + teacher.toString());
+		logger.debug("교수 추가 : " + teacher.toString()); //커맨드객체 확인 
 
 		int result = teacherService.insertTeacher(teacher);
 
@@ -121,13 +129,14 @@ public class TeacherController {
 		return mv;
 	}
 
-	// 교수 상세 정보
+	//직원용 교수 상세 정보
 	@RequestMapping("detailTeacher.do")
 	public ModelAndView detailTeacher(@RequestParam("teacherno") String no) {
 
+		//status라는 필드명 때문에 HttpServelt의 필드명과 중복되는 문제때문에 매개변수가 아닌 객체생성함
 		ModelAndView mv = new ModelAndView();
 
-		Teacher teacher = teacherService.selectOne(no);
+		Teacher teacher = teacherService.selectOne(no); //교수번호로 해당 교수정보를 DB에서 가져옴 
 
 		if (teacher != null) {
 			mv.addObject("teacher", teacher);
@@ -140,13 +149,14 @@ public class TeacherController {
 		return mv;
 	}
 
-	// 교수 정보 수정 페이지로 이동
+	//직원용 교수 정보 수정 페이지로 이동
 	@RequestMapping("updateTeacherForm.do")
 	public ModelAndView updateTeacherForm(@RequestParam("teacherno") String no) {
 		
+		//status라는 필드명 때문에 HttpServelt의 필드명과 중복되는 문제때문에 매개변수가 아닌 객체생성함
 		ModelAndView mv = new ModelAndView();
 
-		Teacher teacher = teacherService.selectOne(no);
+		Teacher teacher = teacherService.selectOne(no);//교수번호로 해당 교수정보를 DB에서 가져옴 
 
 		if (teacher != null) {
 			mv.addObject("teacher", teacher);
@@ -159,12 +169,13 @@ public class TeacherController {
 		return mv;
 	}
 	
-	//교수 정보 수정 
+	//직원용 교수 정보 수정 
 	@RequestMapping(value="updateTeacher.do", method=RequestMethod.POST)
 	public ModelAndView updateTeacher(Teacher teacher) {
 		
-		logger.info(teacher.toString());
+		logger.debug(teacher.toString()); 
 		
+		//status라는 필드명 때문에 HttpServelt의 필드명과 중복되는 문제때문에 매개변수가 아닌 객체생성함
 		ModelAndView mv = new ModelAndView();
 		
 		int result = teacherService.updateTeacher(teacher);
@@ -183,7 +194,7 @@ public class TeacherController {
 		
 	}
 	
-	//교수 정보 삭제 
+	//직원용 교수 정보 삭제 
 	@RequestMapping("deleteTeacher.do")
 	public ModelAndView deleteTeacher(@RequestParam("teacherno") String no) {
 		
@@ -204,14 +215,12 @@ public class TeacherController {
 		return mv;
 	}
 	
-	//교수 이름 불러오기 에이젝스 
+	//직원용 교수 이름 불러오기 Ajax
 	@RequestMapping("getTeacherName.do")
 	public void getDeptName(String teacherno, HttpServletResponse response) {
 
-		logger.info("geTeacherName.do run...");
-		logger.info(teacherno);
-
-		
+		logger.debug("geTeacherName.do run...");
+		logger.debug(teacherno);
 
 		String teachername = teacherService.getTeacherName(teacherno);
 		
@@ -230,14 +239,11 @@ public class TeacherController {
 				out.flush();
 			}
 			
-			
 		} catch (IOException e) {
 			
 			e.printStackTrace();
 		}
-
 		
-
 		out.close();
 	}
 	

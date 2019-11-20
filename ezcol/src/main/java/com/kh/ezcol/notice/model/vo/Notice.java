@@ -10,16 +10,16 @@ public class Notice implements Serializable {
 	 */
 	private static final long serialVersionUID = 4963635229168479127L;
 
-	private int noticeno;
-	private String empno;
-	private String title;
-	private String noticecontent;
-	private String ofilename;
-	private String rfilename;
-	private String noticetype;
-	private Date noticedate;
+	private int noticeno; //공지사항 고유번호 
+	private String empno; //작성자 사번  
+	private String title; //제목 
+	private String noticecontent; //내용 
+	private String ofilename; //첨부파일 원본 파일명 
+	private String rfilename; //첨부파일 중복방지 수정된 파일명 
+	private String noticetype; //공지사항 종류 
+	private Date noticedate; // 작성날짜 
 	
-	private String empname;
+	private String empname; //작성자 이름 
 	
 	public Notice() {
 		// TODO Auto-generated constructor stub

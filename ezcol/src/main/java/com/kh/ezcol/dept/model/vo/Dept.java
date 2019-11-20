@@ -10,10 +10,10 @@ public class Dept implements Serializable {
 	private static final long serialVersionUID = 6337790451866285984L;
 
 	
-	private String deptno;
-	private String teacherno;
-	private String deptname;
-	private String admission;
+	private String deptno; //학과코드 
+	private String teacherno; //학과장 코드 
+	private String deptname; //학과이름 
+	private String admission; //학과정원
 	
 	public Dept() {
 		// TODO Auto-generated constructor stub

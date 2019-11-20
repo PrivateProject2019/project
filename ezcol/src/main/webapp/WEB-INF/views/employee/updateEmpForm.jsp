@@ -12,7 +12,7 @@ Licence URI: https://www.os-templates.com/template-terms
 -->
 <html>
 <head>
-<title>Colossus | Pages | Sidebar Right</title>
+<title>직원정보</title>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -122,6 +122,8 @@ input {
 				<h1 id="title">직원관리</h1>
 				<h1>직원 정보 수정</h1>
 				<form action="updateEmp.do" method="post">
+				<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
 					<table>
 						<tr>
 							<th>No.</th>

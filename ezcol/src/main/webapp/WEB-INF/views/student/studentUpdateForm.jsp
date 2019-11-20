@@ -12,7 +12,7 @@ Licence URI: https://www.os-templates.com/template-terms
 -->
 <html>
 <head>
-<title>Colossus | Pages | Sidebar Right</title>
+<title>학생정보</title>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -111,6 +111,8 @@ input {
 				<h1 id="title">학생관리</h1>
 				<h1>학생 정보 수정</h1>
 				<form action="updateStudent.do" method="post">
+				<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
 					<table>
 						<tr>
 							<th>학번</th>
@@ -140,7 +142,9 @@ input {
 								placeholder="Ex)123456-1111111" value="${student.ssn }" readonly></td>
 							<th>담당교수</th>
 							<td><input type="text" name="teacherno"
-								placeholder="Ex)P1111" value="${student.teacherno }"></td>
+								placeholder="Ex)P1111" size="5" maxlength="8" value="${student.teacherno }">
+							<div id="teachername" style="color: red"></div>	
+							</td>
 						</tr>
 						<tr>
 							<th>이메일</th>
@@ -349,6 +353,33 @@ input {
 					$(this).css('font-weight', 'bold');
 				}
 			});
+			
+			
+			 //교수 이름 불러오기 
+            $("input[name=teacherno]").keyup(function(){
+                
+                
+                $.ajax({
+                    url: "getTeacherName.do",
+                    data:{
+                        teacherno: $("input[name=teacherno]").val()
+                    },
+                    success: function(result){
+                        console.log(result);
+                        $("#teachername").text(result);
+                    },error: function(request, status, errorData){
+					console.log("error code : " + request.status + 
+								"\nMesaage : " + request.responseText + 
+                                    "\nError : " + errorData);
+                    }
+                    
+                    
+                    
+                });
+                
+                
+            });
+			
 
 		});
 	</script>

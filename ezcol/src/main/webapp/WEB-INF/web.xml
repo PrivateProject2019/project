@@ -17,7 +17,7 @@
 		<param-name>contextConfigLocation</param-name>
 
 		<!-- root-context 파일 -->
-		<param-value>classpath:root-context.xml</param-value>
+		<param-value>classpath:root-context.xml,/WEB-INF/spring/appServlet/security-context.xml</param-value>
 	</context-param>
 
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
@@ -42,6 +42,49 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
+	
+	
+	<!-- Spring SSL 인증 설정 -->
+	
+	 <filter>
+ 
+        <filter-name>springSecurityFilterChain</filter-name>
+ 
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+ 
+    </filter>
+ 
+    <filter-mapping>
+ 
+        <filter-name>springSecurityFilterChain</filter-name>
+ 
+        <url-pattern>*.do</url-pattern>
+ 
+    </filter-mapping>
+    
+ 
+ 
+    <security-constraint>
+ 
+        <web-resource-collection>
+ 
+            <web-resource-name>my-secure-app</web-resource-name>
+ 
+            <url-pattern>*.do</url-pattern>
+ 
+        </web-resource-collection>
+ 
+        
+ 
+        <user-data-constraint>
+ 
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+ 
+        </user-data-constraint>
+ 
+    </security-constraint> 
+    
+    
 
 
 	<!-- Processes application requests -->
@@ -51,7 +94,7 @@
 		</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml,/WEB-INF/spring/appServlet/security-context.xml
 			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>

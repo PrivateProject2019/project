@@ -12,7 +12,7 @@ Licence URI: https://www.os-templates.com/template-terms
 -->
 <html>
 <head>
-<title>Colossus | Pages | Sidebar Right</title>
+<title>학과정보</title>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -111,6 +111,9 @@ input {
 				<h1 id="title">교수관리</h1>
 				<h1>교수 정보 입력</h1>
 				<form action="updateDept.do" method="post">
+				
+				<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
 					<table>
 						<tr>
 							<th>No.</th>

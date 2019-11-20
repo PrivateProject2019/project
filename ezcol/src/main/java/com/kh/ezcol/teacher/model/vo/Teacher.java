@@ -9,20 +9,20 @@ public class Teacher implements Serializable {
 	 */
 	private static final long serialVersionUID = 6557141190925024L;
 
-	private String teacherno;
-	private String deptno;
-	private String name;
-	private String status;
-	private String ssn;
-	private String email;
-	private String address;
-	private String detailaddress;
-	private String post;
-	private String phone;
-	private String emergency;
-	private String identity;
+	private String teacherno; //교수번호 
+	private String deptno; //학과번호  
+	private String name; //이름  
+	private String status; //재직상태 
+	private String ssn; //주민번호 
+	private String email; //이메일 
+	private String address; //주소 
+	private String detailaddress; //상세주소 
+	private String post; //우편번호 
+	private String phone; //연락처  
+	private String emergency; //비상연락망 
+	private String identity; //로그인시 사용하는 식별자 
 	
-	private String deptname;
+	private String deptname; //학과이름 
 	
 	public Teacher() {
 		// TODO Auto-generated constructor stub

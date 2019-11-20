@@ -7,20 +7,20 @@ public class Student implements Serializable {
 	
 	private static final long serialVersionUID = 8419469597238632392L;
 
-	private String studentno;
-	private String teacherno;
-	private String deptno;
-	private String name;
-	private String status;
-	private String ssn;
-	private String email;
-	private String address;
-	private String detailaddress;
-	private String post;
-	private String phone;
-	private String emergency;
-	private String grade;
-	private String identity;
+	private String studentno; //학번
+	private String teacherno; //지도교수 
+	private String deptno; //학과번호  
+	private String name; //이름 
+	private String status; //재적상태 
+	private String ssn; //주민등록번호 
+	private String email; //이메엘 
+	private String address; //주소 
+	private String detailaddress; //상세주소 
+	private String post; //우편번호 
+	private String phone; //연락처 
+	private String emergency; //긴급연락망 
+	private String grade; //학년 
+	private String identity; //로그인에 필요한 신분 구별자 
 	
 	
 	private String teachername;

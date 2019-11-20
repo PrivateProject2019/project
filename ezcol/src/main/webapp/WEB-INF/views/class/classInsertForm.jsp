@@ -12,7 +12,7 @@ Licence URI: https://www.os-templates.com/template-terms
 -->
 <html>
 <head>
-<title>Colossus | Pages | Sidebar Right</title>
+<title>강의정보</title>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -106,6 +106,9 @@ input {
 				<h1>수업 추가</h1>
 				<form action="insertClass.do" method="post"
 					enctype="multipart/form-data">
+					
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
 					<table>
 						<tr>
 							<th>No.</th>

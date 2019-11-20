@@ -62,21 +62,25 @@
 						</span> <input class="input100" type="password" name="password">
 						<span class="focus-input100" data-placeholder="PassWord"></span>
 					</div>
-					
-					<div style="margin: 0; color: red; font-weight: bold; font-size: 10pt;" id="errorMessage">
-					${ message }  
-					</div>
 
-					<input type="radio" value="student" name="type"> Student <input
+					<div
+						style="margin: 0; color: red; font-weight: bold; font-size: 10pt;"
+						id="errorMessage">${ message }</div>
+
+					<input type="radio" value="student" name="type"> Student<input
 						type="radio" value="teacher" name="type"> Professor <input
 						type="radio" value="employee" name="type"> Employee
 
 					<div class="container-login100-form-btn">
 						<div class="wrap-login100-form-btn">
 							<div class="login100-form-bgbtn"></div>
-							<button class="login100-form-btn" type="submit" onclick="return validate()">Login</button>
+							<button class="login100-form-btn" type="submit"
+								onclick="return validate()">Login </button>
 						</div>
 					</div>
+
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
 
 					<div class="text-center p-t-115"></div>
 				</form>
@@ -103,21 +107,21 @@
 	<script src="resources/js/countdowntime.js"></script>
 	<!--===============================================================================================-->
 	<script src="resources/js/main.js"></script>
-	
-	
-	
+
+
+
 	<script type="text/javascript">
-	
-	function validate(){
-		
-		if($("input:radio[name=type]").is(":checked") == false){
-			$("#errorMessage").text("학생,교수,직원을 선택해주세요");
-			return false;
+		function validate() {
+
+			if ($("input:radio[name=type]").is(":checked") == false) {
+				$("#errorMessage").text("학생,교수,직원을 선택해주세요");
+				return false;
+			}
+
+			return true;
 		}
-			
-		return true;
-	}
-	
+		
+		
 	</script>
 
 </body>

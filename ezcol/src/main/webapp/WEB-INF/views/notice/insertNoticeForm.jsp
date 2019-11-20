@@ -12,7 +12,7 @@ Licence URI: https://www.os-templates.com/template-terms
 -->
 <html>
 <head>
-<title>Colossus | Pages | Sidebar Right</title>
+<title>공지사항</title>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -92,6 +92,8 @@ button {
 			<h1>공지사항 작성</h1>
 			
 			<form action="insertNotice.do" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
 			<table>
 				<tr>
 					<th>제목</th>
